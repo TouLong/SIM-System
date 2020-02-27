@@ -1,0 +1,7 @@
+Project Setting
+	Quality
+		Other
+			VSync Count - Don't Sync
+	Physics
+		Gravity - Y=-98.1
+		Auto Sync Transforms - true
