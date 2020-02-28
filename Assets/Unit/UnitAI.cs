@@ -36,6 +36,8 @@ public class UnitAI : Unit
         Rigidbody rigidbody = res.GetComponent<Rigidbody>();
         if (rigidbody != null)
             rigidbody.constraints = RigidbodyConstraints.FreezeAll;
+        Collider collider = res.GetComponent<Collider>();
+        collider.enabled = false;
         holdingObject = res;
     }
 }

@@ -18,15 +18,26 @@ public class Game : MonoBehaviour
         ObjectPlacement = GetComponent<ObjectPlacement>();
         transform.Find("MainCanvas").gameObject.SetActive(true);
         units = transform.Find("Units").GetComponentsInChildren<UnitAI>().ToList();
+        ObjectSelection.onSelect += (GameObject select) =>
+        {
+            UnitAI unit = select.transform.GetComponent<UnitAI>();
+            if (unit != null)
+                UnitWindow.Select(unit);
+        };
+        ObjectSelection.onDeselect += () =>
+        {
+            UnitWindow.DeselectAll();
+        };
+        ObjectSelection.selectebleObjects = units.Select(x => x.gameObject).ToList();
     }
 
     void Start()
     {
         TaskManager.Logging(units[0]);
         TaskManager.Logging(units[1]);
-        TaskManager.Logging(units[2]);
-        TaskManager.MakingFirewood(units[3]);
-        TaskManager.MakingWoodenPlank(units[4]);
+        TaskManager.MakingFirewood(units[2]);
+        TaskManager.MakingWoodenPlank(units[3]);
+        TaskManager.StorageWood(units[4]);
         TaskManager.StorageWood(units[5]);
         TaskManager.Add<Task.Storage<Branches, BranchesHeap>>(units[6]);
         TaskManager.Add<Task.Storage<WoodenPlank, WoodenPlankPile>>(units[7]);
@@ -38,22 +49,16 @@ public class Game : MonoBehaviour
     void Update()
     {
         TaskManager.Update();
-        if (Input.GetMouseButtonDown(0) && !ObjectPlacement.IsPlacing && !MouseRay.IsOverUI)
-        {
-            GameObject gameObject = MouseRay.HitObject();
-            if (gameObject != null)
-            {
-                selectedUnit.Clear();
-                UnitWindow.DeselectAll();
-                UnitAI unit = gameObject.GetComponent<UnitAI>();
-                if (unit != null)
-                    UnitWindow.Select(unit);
-            }
-        }
-        if (Input.GetKeyDown(KeyCode.X))
+        if (Input.GetKeyDown(KeyCode.Q))
         {
         }
-        if (Input.GetKeyDown(KeyCode.Z))
+        if (Input.GetKeyDown(KeyCode.W))
+        {
+        }
+        if (Input.GetKeyDown(KeyCode.E))
+        {
+        }
+        if (Input.GetKeyDown(KeyCode.R))
         {
         }
     }

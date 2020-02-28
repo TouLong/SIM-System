@@ -35,7 +35,7 @@ public class Tree : MapResource
                 rigidbody.constraints = RigidbodyConstraints.None;
                 while (branchesAmount > 0)
                 {
-                    Instantiate(branches, leaves.transform.position, Q4Random.Value(), Game.Group("Branches"));
+                    Instantiate(branches, leaves.transform.position + V3Random.Range(-1, 1), Q4Random.Value(), Game.Group("Branches"));
                     branchesAmount--;
                 }
             };

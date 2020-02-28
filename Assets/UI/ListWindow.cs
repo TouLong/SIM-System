@@ -14,19 +14,19 @@ public class ListWindow : MonoBehaviour
         scrollRect = transform.GetComponentInChildren<ScrollRect>();
     }
 
-    protected GameObject AddItem(string detail)
+    protected GameObject AddItem(string text)
     {
         GameObject item = Instantiate(itemTemplate, content).gameObject;
         item.name = "item";
-        item.transform.Find("Text").GetComponent<Text>().text = detail;
+        item.transform.Find("Text").GetComponent<Text>().text = text;
         item.SetActive(true);
         UpdateScroll();
         return item;
     }
-    protected void UpdateItem(GameObject item, string detail)
+    protected void UpdateItem(GameObject item, string text)
     {
         item.name = "item";
-        item.transform.Find("Text").GetComponent<Text>().text = detail;
+        item.transform.Find("Text").GetComponent<Text>().text = text;
         item.SetActive(true);
         UpdateScroll();
     }

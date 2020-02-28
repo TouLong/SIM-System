@@ -18,7 +18,7 @@ public class Build
 
     public Build(Res res)
     {
-        info = TextShow.Stay("", res.transform.position);
+        info = TextUI.Stay("", res.transform.position);
         UpdateMessage();
     }
 

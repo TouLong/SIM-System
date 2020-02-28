@@ -190,9 +190,8 @@ GameObject:
   m_Component:
   - component: {fileID: 157039690918754296}
   - component: {fileID: 3780405873274226157}
-  - component: {fileID: 3780405873274226158}
+  - component: {fileID: -3113787515012884146}
   - component: {fileID: 3780405873274226159}
-  - component: {fileID: 3780405873274226152}
   - component: {fileID: 3780405873274226153}
   - component: {fileID: 3780405873274226154}
   m_Layer: 0
@@ -237,22 +236,19 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
---- !u!54 &3780405873274226158
-Rigidbody:
+--- !u!65 &-3113787515012884146
+BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3780405873274226155}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
   serializedVersion: 2
-  m_Mass: 1
-  m_Drag: 0
-  m_AngularDrag: 999
-  m_UseGravity: 0
-  m_IsKinematic: 1
-  m_Interpolate: 0
-  m_Constraints: 80
-  m_CollisionDetection: 0
+  m_Size: {x: 3, y: 6, z: 3}
+  m_Center: {x: 0, y: 3, z: 0}
 --- !u!195 &3780405873274226159
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -275,20 +271,6 @@ NavMeshAgent:
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
---- !u!136 &3780405873274226152
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3780405873274226155}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  m_Radius: 2
-  m_Height: 7
-  m_Direction: 1
-  m_Center: {x: 0, y: 3.5, z: 0}
 --- !u!114 &3780405873274226153
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -21,8 +21,12 @@ public static class MouseRay
 
     static public GameObject HitObject()
     {
-        Physics.Raycast(cam.ScreenPointToRay(Input.mousePosition), out RaycastHit hit);
-        return hit.transform != null ? hit.transform.gameObject : null;
+        Hit(out RaycastHit hit);
+        return hit.transform.gameObject;
+    }
+    static public bool Hit(out RaycastHit hit)
+    {
+        return Physics.Raycast(cam.ScreenPointToRay(Input.mousePosition), out hit, Mathf.Infinity);
     }
 
     static public bool IsOverUI => EventSystem.current.IsPointerOverGameObject();
