@@ -34,13 +34,13 @@ public class TaskManager
     }
     static public void MakingWoodenPlank(UnitAI unit)
     {
+        Add<Task.Make<Sawhorse>>(unit);
         Add<Task.SupplyToWorkshop<Sawhorse, Log, WoodPile>>(unit);
-        Add<Task.Make<Sawhorse, WoodenPlank>>(unit);
     }
     static public void MakingFirewood(UnitAI unit)
     {
+        Add<Task.Make<ChoppingSpot>>(unit);
         Add<Task.SupplyToWorkshop<ChoppingSpot, Log, WoodPile>>(unit);
-        Add<Task.Make<ChoppingSpot, Firewood>>(unit);
     }
     static public void StorageWood(UnitAI unit)
     {
@@ -128,32 +128,25 @@ public class Task
 
         public override void Execute()
         {
-            void Storage(string pickup, string carry, string place)
+            unit.MoveTo(res.transform, res.radius, UnitAnim.Walk, () =>
             {
-                unit.MoveTo(res.transform, res.radius, UnitAnim.Walk, () =>
+                unit.Action(res.prop.pickupAnim, 0.5f, () =>
                 {
-                    unit.Action(pickup, 0.5f, () =>
+                    unit.Pickup(res);
+                }, () =>
+                {
+                    unit.MoveTo(storage.interact, 2f, res.prop.carryAnim, () =>
                     {
-                        unit.Pickup(res);
-                    }, () =>
-                    {
-                        unit.MoveTo(storage.interact, 2f, carry, () =>
+                        unit.Action(res.prop.placeAnim, 0.2f, () =>
                         {
-                            unit.Action(place, 0.5f, () =>
-                            {
-                                storage.Input(res);
-                            }, () =>
-                            {
-                                Complete();
-                            });
+                            storage.Input(res);
+                        }, () =>
+                        {
+                            Complete();
                         });
                     });
                 });
-            }
-            if (res.isSmallObject)
-                Storage(UnitAnim.Puckup1, UnitAnim.Walk, UnitAnim.Puckup1);
-            else
-                Storage(UnitAnim.Puckup2, UnitAnim.Carry, UnitAnim.Place2);
+            });
         }
 
     }
@@ -191,62 +184,49 @@ public class Task
 
         public override void Execute()
         {
-            void Supply(string pickup, string carry, string place)
+            float dist;
+            Res resource;
+            Transform moveTo;
+            if (byStorage)
             {
-                float dist;
-                Res resource;
-                Transform moveTo;
-                if (byStorage)
+                resource = storage.item;
+                moveTo = storage.interact;
+                dist = 2f;
+            }
+            else
+            {
+                resource = this.resource;
+                moveTo = resource.transform;
+                dist = resource.radius;
+            }
+            unit.MoveTo(moveTo, dist, UnitAnim.Walk, () =>
+            {
+                unit.Action(resource.prop.pickupAnim, 0.5f, () =>
                 {
-                    resource = null;
-                    moveTo = storage.interact;
-                    dist = 2f;
-                }
-                else
+                    if (byStorage)
+                        resource = storage.Output();
+                    unit.Pickup(resource);
+                    resource.hasInteracted = true;
+                }, () =>
                 {
-                    resource = this.resource;
-                    moveTo = resource.transform;
-                    dist = resource.radius;
-                }
-                unit.MoveTo(moveTo, dist, UnitAnim.Walk, () =>
-                {
-                    unit.Action(pickup, 0.5f, () =>
+                    unit.MoveTo(workshop.transform, workshop.radius, resource.prop.carryAnim, () =>
                     {
-                        if (byStorage)
-                            resource = storage.Output();
-                        unit.Pickup(resource);
-                        resource.hasInteracted = true;
-                    }, () =>
-                    {
-                        unit.MoveTo(workshop.transform, workshop.radius, carry, () =>
+                        unit.Action(resource.prop.placeAnim, 0.5f, () =>
                         {
-                            unit.Action(place, 0.5f, () =>
-                            {
-                                workshop.Input(resource);
-                            }, () =>
-                            {
-                                Complete();
-                            });
+                            workshop.Input(resource);
+                        }, () =>
+                        {
+                            Complete();
                         });
                     });
                 });
-            }
-            bool isSmallObject;
-            if (byStorage)
-                isSmallObject = storage.item.isSmallObject;
-            else
-                isSmallObject = this.resource.isSmallObject;
-            if (isSmallObject)
-                Supply(UnitAnim.Puckup1, UnitAnim.Walk, UnitAnim.Puckup1);
-            else
-                Supply(UnitAnim.Puckup2, UnitAnim.Carry, UnitAnim.Place2);
+            });
         }
     }
 
-    public class Make<W, P> : Task where W : Workshop where P : Res
+    public class Make<W> : Task where W : Workshop
     {
         public Workshop workshop;
-        public Res product;
 
         public override bool GetReady()
         {
@@ -270,6 +250,34 @@ public class Task
             }, () =>
             {
                 workshop.hasInteracted = false;
+                Complete();
+            });
+        }
+    }
+
+    public class BuildObject : Task
+    {
+        BuildSpot buildSpot;
+        public override bool GetReady()
+        {
+            buildSpot = Res.GetAccessNear<BuildSpot>(unit.transform.position);
+            if (buildSpot != null)
+            {
+                buildSpot.hasInteracted = true;
+                Start();
+                return true;
+            }
+            else
+                return false;
+        }
+        public override void Execute()
+        {
+            unit.MoveAndActionPeriod(buildSpot.workLocation, buildSpot.radius, UnitAnim.Walk, UnitAnim.AxeV, () =>
+            {
+                buildSpot.Process();
+                return !buildSpot.IsComplete;
+            }, () =>
+            {
                 Complete();
             });
         }

@@ -44,6 +44,7 @@ public class Game : MonoBehaviour
         TaskManager.Add<Task.Storage<WoodenPlank, WoodenPlankPile>>(units[8]);
         TaskManager.Add<Task.Storage<Firewood, FirewoodPile>>(units[9]);
         TaskManager.Add<Task.Storage<Firewood, FirewoodPile>>(units[10]);
+        TaskManager.Add<Task.BuildObject>(units[11]);
     }
 
     void Update()

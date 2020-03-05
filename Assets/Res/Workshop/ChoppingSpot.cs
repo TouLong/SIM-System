@@ -4,9 +4,8 @@ public class ChoppingSpot : Workshop
 {
     public GameObject log;
     public Transform[] firewoods;
-    new void Start()
+    void Start()
     {
-        base.Start();
         complete = 8;
     }
     public override void Process()

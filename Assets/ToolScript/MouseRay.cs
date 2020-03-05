@@ -5,7 +5,7 @@ public static class MouseRay
 {
     static readonly Camera cam = Camera.main;
 
-    static public Vector3 Position()
+    static public Vector3 Point()
     {
         Physics.Raycast(cam.ScreenPointToRay(Input.mousePosition), out RaycastHit hit);
         return hit.point;

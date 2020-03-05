@@ -3966,6 +3966,7 @@ MonoBehaviour:
   hasInteracted: 0
   isSmallObject: 0
   radius: 5
+  prop: {fileID: 11400000, guid: f986f28004c6dce4fa8dd447a5785a7c, type: 2}
   capacity: 96
   count: 0
   inventory: {fileID: 5874410970712887153}

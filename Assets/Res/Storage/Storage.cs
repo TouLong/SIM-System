@@ -11,9 +11,8 @@ public class Storage : Res
     public Transform inventory;
     public Transform interact;
     public Res item;
-    private new void Start()
+    void Start()
     {
-        base.Start();
         items = new Transform[inventory.childCount];
         for (int i = 0; i < inventory.childCount; ++i)
         {

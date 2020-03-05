@@ -127,3 +127,4 @@ MonoBehaviour:
   hasInteracted: 0
   isSmallObject: 1
   radius: 2
+  prop: {fileID: 11400000, guid: 302e62a5f675cff4890b17f83f062739, type: 2}

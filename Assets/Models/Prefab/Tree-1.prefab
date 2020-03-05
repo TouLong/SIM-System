@@ -193,6 +193,7 @@ MonoBehaviour:
   hasInteracted: 0
   isSmallObject: 0
   radius: 4
+  prop: {fileID: 11400000, guid: d7713c623b5eb784481e2bafdf7a3e44, type: 2}
   durability: 6
   leavesGO: {fileID: 2716737841830693936}
   woodGO: {fileID: 1285698884686901850}

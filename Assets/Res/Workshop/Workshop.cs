@@ -4,7 +4,6 @@ using System.Linq;
 using UnityEngine;
 public class Workshop : Res
 {
-    public Res material;
     public Res product;
     protected float complete;
     protected float processing;

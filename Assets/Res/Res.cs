@@ -84,12 +84,15 @@ public class Res : MonoBehaviour
     [HideInInspector]
     public bool isSmallObject;
     public int radius;
-    protected void Start()
+    public ResProp prop;
+    void OnEnable()
     {
         Add(this);
+        gameObject.layer = 0;
     }
     void OnDisable()
     {
         Remove(this);
+        gameObject.layer = 2;
     }
 }

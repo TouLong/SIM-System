@@ -8,12 +8,28 @@ using static UnityEngine.UI.Button;
 public class CommandPanel : MonoBehaviour//, IPointerEnterHandler, IPointerExitHandler
 {
     public Transform commandPrefab;
+    public List<Res> resList;
+    public List<Res> buildList;
     List<SubCommandPanel> panelLsit;
     SubCommandPanel BuildPanel;
     SubCommandPanel ProcessingPanel;
     SubCommandPanel GatherPanel;
     SubCommandPanel ObjectPanel;
     SubCommandPanel TransPanel;
+    static readonly Dictionary<Type, string> resDict = new Dictionary<Type, string>()
+    {
+        {typeof(Tree),"樹" },
+        {typeof(Log),"原木" },
+        {typeof(Branches),"樹枝" },
+        {typeof(WoodenPlank),"木板" },
+        {typeof(Firewood),"木柴" },
+        {typeof(WoodPile),"木頭儲藏" },
+        {typeof(WoodenPlankPile),"木板儲藏" },
+        {typeof(FirewoodPile),"木柴儲藏" },
+        {typeof(BranchesHeap),"樹枝儲藏" },
+        {typeof(Sawhorse),"木板站" },
+        {typeof(ChoppingSpot),"木柴站" },
+    };
 
     void Awake()
     {
@@ -22,20 +38,28 @@ public class CommandPanel : MonoBehaviour//, IPointerEnterHandler, IPointerExitH
         BuildPanel = SetupSubPanel("建造");
         ProcessingPanel = SetupSubPanel("製造");
         GatherPanel = SetupSubPanel("採集");
-        ObjectPanel = SetupSubPanel("物品");
         TransPanel = SetupSubPanel("運輸");
+        ObjectPanel = SetupSubPanel("物品");
 
         SetTaskCommand<Task.Gather<Tree>>("劈樹", GatherPanel);
         SetTaskCommand<Task.Gather<Leaves>>("清樹", GatherPanel);
         SetTaskCommand<Task.Gather<Wood>>("砍木", GatherPanel);
-        SetTaskCommand<Task.Make<Sawhorse, WoodenPlank>>("木板", ProcessingPanel);
-        SetTaskCommand<Task.Make<ChoppingSpot, Firewood>>("木柴", ProcessingPanel);
+        SetTaskCommand<Task.Make<Sawhorse>>("木板", ProcessingPanel);
+        SetTaskCommand<Task.Make<ChoppingSpot>>("木柴", ProcessingPanel);
         SetTaskCommand<Task.SupplyToWorkshop<ChoppingSpot, Log, WoodPile>>("木板站", TransPanel);
         SetTaskCommand<Task.SupplyToWorkshop<Sawhorse, Log, WoodPile>>("木柴站", TransPanel);
         SetTaskCommand<Task.Storage<Log, WoodPile>>("原木", TransPanel);
         SetTaskCommand<Task.Storage<Branches, BranchesHeap>>("樹枝", TransPanel);
         SetTaskCommand<Task.Storage<WoodenPlank, WoodenPlankPile>>("木板", TransPanel);
         SetTaskCommand<Task.Storage<Firewood, FirewoodPile>>("木柴", TransPanel);
+        foreach (Res res in resList)
+        {
+            SetCommand(resDict[res.GetType()], ObjectPanel).AddListener(() => { ObjectPlacement.Request(res); });
+        }
+        foreach (Res res in buildList)
+        {
+            SetCommand(resDict[res.GetType()], BuildPanel).AddListener(() => { ObjectPlacement.Request(res, true); });
+        }
     }
 
     SubCommandPanel SetupSubPanel(string panelName)

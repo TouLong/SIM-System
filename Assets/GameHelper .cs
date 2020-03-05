@@ -58,24 +58,6 @@ public class GameHelper : EditorWindow
         }
         DestroyImmediate(bone.gameObject);
 
-        //void DeleteBoneEnd(Transform trans)
-        //{
-        //    if (trans.childCount == 0)
-        //    {
-        //        if (trans.name.Contains("_end"))
-        //            DestroyImmediate(trans.gameObject);
-        //        return;
-        //    }
-        //    else
-        //    {
-        //        for (int i = 0; i < trans.childCount; i++)
-        //        {
-        //            DeleteBoneEnd(trans.GetChild(i));
-        //        }
-        //    }
-        //}
-        //DeleteBoneEnd(skinBone);
-
         if (template == null) return;
         foreach (Component component in template.GetComponents<Component>())
         {

@@ -4,9 +4,8 @@ public class Sawhorse : Workshop
 {
     public GameObject log;
     public Transform[] planks;
-    new void Start()
+    void Start()
     {
-        base.Start();
         complete = 10;
     }
     public override void Process()

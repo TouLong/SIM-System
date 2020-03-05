@@ -7,8 +7,8 @@ public struct UnitAnim
     static public readonly string Walk = "walk";
     static public readonly string AxeH = "axe-h";
     static public readonly string AxeV = "axe-v";
-    static public readonly string Puckup1 = "left-grab";
-    static public readonly string Puckup2 = "take-both";
+    static public readonly string Pickup1 = "left-grab";
+    static public readonly string Pickup2 = "take-both";
     static public readonly string Place2 = "place-both";
     static public readonly string Carry = "carry";
     static public readonly string Punch = "punch";

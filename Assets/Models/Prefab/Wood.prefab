@@ -112,6 +112,7 @@ MonoBehaviour:
   hasInteracted: 0
   isSmallObject: 0
   radius: 2
+  prop: {fileID: 11400000, guid: 39fb811f450468f41acecdd8483de431, type: 2}
   durability: 6
   log: {fileID: 3770806610314980723, guid: c16924d62a2857f4493d210cf13c473a, type: 3}
   logSpawns:

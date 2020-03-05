@@ -3,42 +3,76 @@ using System;
 
 public class ObjectPlacement : MonoBehaviour
 {
-    Res res;
+    public BuildSpot buildSpot;
+    Res res, request;
     bool build;
+    static ObjectPlacement instance;
     public bool IsPlacing => res != null;
-    public void SetObject(Res res, bool build = true)
+    static public void Request(Res res, bool build = false)
     {
-        this.res = res;
-        this.build = build;
+        instance.request = res;
+        instance.build = build;
+        ObjectSelection.enable = false;
     }
-
+    void Awake()
+    {
+        instance = this;
+    }
     void Update()
     {
-        if (res == null) return;
-        if (Input.GetMouseButtonDown(0))
-            CreateObject();
-        else if (Input.GetKeyDown(KeyCode.Escape) || Input.GetMouseButtonDown(1))
-            Cancel();
+        if (IsPlacing)
+        {
+            if (Input.GetMouseButtonUp(0))
+                CreateObject();
+            else if (Input.GetKeyUp(KeyCode.Escape) || Input.GetMouseButtonUp(1))
+                Cancel();
+            else
+                Move();
+        }
+        else if (request != null)
+        {
+            NewObject(request);
+        }
+    }
+
+    void NewObject(Res newRes)
+    {
+        if (build)
+        {
+            res = Instantiate(buildSpot, MouseRay.Point(), Quaternion.identity);
+        }
         else
-            Move();
+        {
+            res = Instantiate(newRes, MouseRay.Point(), Quaternion.identity);
+        }
+        res.enabled = false;
+        Rigidbody rig = res.GetComponent<Rigidbody>();
+        if (rig != null)
+            rig.detectCollisions = false;
     }
 
     void CreateObject()
     {
-        if (build)
-            new Build(res);
+        Rigidbody rig = res.GetComponent<Rigidbody>();
+        if (rig != null)
+            rig.detectCollisions = true;
+        res.enabled = true;
         res = null;
     }
 
     void Move()
     {
-        res.transform.position = MouseRay.SnapPosition(1);
+        res.transform.position = MouseRay.Point();
+        if (!build)
+            res.transform.position += Vector3.up * 3;
     }
 
     void Cancel()
     {
         Destroy(res.gameObject);
         res = null;
+        request = null;
+        ObjectSelection.enable = true;
     }
 }
 

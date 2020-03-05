@@ -8,6 +8,7 @@ public class ObjectSelection : MonoBehaviour
     public Canvas canvas;
     public RectTransform frame;
     Vector3 startPoint, endPoint;
+    static public bool enable = true;
     static public Action<GameObject> onSelect;
     static public Action onDeselect;
     static public List<GameObject> selectebleObjects;
@@ -18,6 +19,7 @@ public class ObjectSelection : MonoBehaviour
 
     void Update()
     {
+        if (!enable) return;
         if (Input.GetMouseButtonDown(0) && !MouseRay.IsOverUI)
         {
             startPoint = Input.mousePosition;

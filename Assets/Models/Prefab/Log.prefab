@@ -29,7 +29,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2299084150900797192}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 650, y: 32.008705, z: 557}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 529590911031817199}
@@ -128,6 +128,7 @@ MonoBehaviour:
   hasInteracted: 0
   isSmallObject: 0
   radius: 2
+  prop: {fileID: 11400000, guid: 47f9813ad973577479f899dceb497c39, type: 2}
   durability: 6
 --- !u!1 &9014535528617884973
 GameObject:
