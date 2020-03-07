@@ -9,7 +9,6 @@ public class Storage : Res
     public uint capacity;
     public uint count;
     public Transform inventory;
-    public Transform interact;
     public Res item;
     void Start()
     {
@@ -31,11 +30,24 @@ public class Storage : Res
     public bool IsFull => count >= capacity;
     public static Storage GetNotFullNear<T>(Vector3 position) where T : Storage
     {
-        return GetWhereNear<T>(a => !a.IsFull, position);
+        return GetWhereNear<T>(x => !x.IsFull, position);
     }
     public static Storage GetNotEmptyNear<T>(Vector3 position) where T : Storage
     {
-        return GetWhereNear<T>(a => !a.IsEmpty, position);
+        return GetWhereNear<T>(x => !x.IsEmpty, position);
+    }
+    public static Storage GetNotEmptyNear(Type type, Vector3 position)
+    {
+        IEnumerable<Storage> storages = Get<Storage>(type);
+        if (storages == null)
+            return null;
+        if (storages.Any())
+        {
+            storages = storages.Where(x => !x.IsEmpty);
+            if (storages.Any())
+                return storages.OrderBy(r => Vector3.Distance(r.transform.position, position)).First();
+        }
+        return null;
     }
     public virtual void Input(Res res)
     {

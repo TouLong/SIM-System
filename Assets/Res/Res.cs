@@ -7,34 +7,31 @@ using System.Linq;
 public class Res : MonoBehaviour
 {
     #region static
-    static readonly Dictionary<Type, List<object>> resDic = new Dictionary<Type, List<object>>();
-
-    public static List<object> Get(Type type)
+    static readonly Dictionary<Type, List<Res>> resDic = new Dictionary<Type, List<Res>>();
+    static public Dictionary<Type, ResProp> propDic = new Dictionary<Type, ResProp>();
+    public float Interact => propDic[GetType()].interact;
+    public string PickupAnim => propDic[GetType()].pickupAnim;
+    public string PlaceAnim => propDic[GetType()].placeAnim;
+    public string CarryAnim => propDic[GetType()].carryAnim;
+    public BuildCost BuildCost => propDic[GetType()].buildCost;
+    public static IEnumerable<T> Get<T>(Type type) where T : Res
     {
-        resDic.TryGetValue(type, out List<object> value);
-        return value;
-    }
-    public static IEnumerable<T> GetAll<T>()
-    {
-        if (resDic.TryGetValue(typeof(T), out List<object> value))
+        if (resDic.TryGetValue(type, out List<Res> value))
             return value.OfType<T>();
         else
             return null;
     }
-    public static IEnumerable<T> GetWhere<T>(Func<T, bool> predicate)
+    public static IEnumerable<T> Get<T>() where T : Res
     {
-        if (resDic.TryGetValue(typeof(T), out List<object> value))
-            return value.OfType<T>().Where(predicate);
+        if (resDic.TryGetValue(typeof(T), out List<Res> value))
+            return value.OfType<T>();
         else
             return null;
     }
-    public static T GetNear<T>(Vector3 position) where T : Res
+    public static IEnumerable<T> GetWhere<T>(Func<T, bool> predicate) where T : Res
     {
-        IEnumerable<T> enumerable = GetAll<T>();
-        if (enumerable == null)
-            return null;
-        else if (enumerable.Any())
-            return enumerable.OrderBy(r => Vector3.Distance(r.transform.position, position)).First();
+        if (resDic.TryGetValue(typeof(T), out List<Res> value))
+            return value.OfType<T>().Where(predicate);
         else
             return null;
     }
@@ -48,43 +45,27 @@ public class Res : MonoBehaviour
         else
             return null;
     }
-    public static T GetWhereNear<T>(Type type, Func<T, bool> predicate, Vector3 position) where T : Res
-    {
-        IEnumerable<T> enumerable = Get(type).OfType<T>().Where(predicate);
-        if (enumerable == null)
-            return null;
-        else if (enumerable.Any())
-            return enumerable.OrderBy(r => Vector3.Distance(r.transform.position, position)).First();
-        else
-            return null;
-    }
     public static T GetAccessNear<T>(Vector3 position) where T : Res
     {
         return GetWhereNear<T>(a => !a.hasInteracted, position);
     }
-
-    public static void Add(object obj)
+    public static void Add(Res obj)
     {
         Type type = obj.GetType();
         if (!resDic.ContainsKey(type))
-            resDic.Add(type, new List<object>());
+            resDic.Add(type, new List<Res>());
         resDic[type].Add(obj);
     }
-    public static void Remove(object obj)
+    public static void Remove(Res obj)
     {
         Type type = obj.GetType();
         if (!resDic.ContainsKey(type))
             return;
         resDic[type].Remove(obj);
     }
-
     #endregion
     [HideInInspector]
     public bool hasInteracted = false;
-    [HideInInspector]
-    public bool isSmallObject;
-    public int radius;
-    public ResProp prop;
     void OnEnable()
     {
         Add(this);

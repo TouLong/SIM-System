@@ -94,7 +94,7 @@ public class Task
 
         public override void Execute()
         {
-            unit.MoveAndActionPeriod(res.transform, res.radius, UnitAnim.Walk, UnitAnim.Punch, () =>
+            unit.MoveAndActionPeriod(res.transform, res.Interact, UnitAnim.Walk, UnitAnim.Punch, () =>
             {
                 res.Gather();
                 return res.durability > 0;
@@ -128,16 +128,16 @@ public class Task
 
         public override void Execute()
         {
-            unit.MoveTo(res.transform, res.radius, UnitAnim.Walk, () =>
+            unit.MoveTo(res.transform, res.Interact, UnitAnim.Walk, () =>
             {
-                unit.Action(res.prop.pickupAnim, 0.5f, () =>
+                unit.Action(res.PickupAnim, 0.5f, () =>
                 {
                     unit.Pickup(res);
                 }, () =>
                 {
-                    unit.MoveTo(storage.interact, 2f, res.prop.carryAnim, () =>
+                    unit.MoveTo(storage.transform, 2f, res.CarryAnim, () =>
                     {
-                        unit.Action(res.prop.placeAnim, 0.2f, () =>
+                        unit.Action(res.PlaceAnim, 0.2f, () =>
                         {
                             storage.Input(res);
                         }, () =>
@@ -190,18 +190,18 @@ public class Task
             if (byStorage)
             {
                 resource = storage.item;
-                moveTo = storage.interact;
+                moveTo = storage.transform;
                 dist = 2f;
             }
             else
             {
                 resource = this.resource;
                 moveTo = resource.transform;
-                dist = resource.radius;
+                dist = resource.Interact;
             }
             unit.MoveTo(moveTo, dist, UnitAnim.Walk, () =>
             {
-                unit.Action(resource.prop.pickupAnim, 0.5f, () =>
+                unit.Action(resource.PickupAnim, 0.5f, () =>
                 {
                     if (byStorage)
                         resource = storage.Output();
@@ -209,11 +209,80 @@ public class Task
                     resource.hasInteracted = true;
                 }, () =>
                 {
-                    unit.MoveTo(workshop.transform, workshop.radius, resource.prop.carryAnim, () =>
+                    unit.MoveTo(workshop.transform, workshop.Interact, resource.CarryAnim, () =>
                     {
-                        unit.Action(resource.prop.placeAnim, 0.5f, () =>
+                        unit.Action(resource.PlaceAnim, 0.5f, () =>
                         {
                             workshop.Input(resource);
+                        }, () =>
+                        {
+                            Complete();
+                        });
+                    });
+                });
+            });
+        }
+    }
+
+    public class SupplyToBuildSpot : Task
+    {
+        public BuildSpot buildSpot;
+        public MapResource resource;
+        public Storage storage;
+        bool byStorage;
+        public override bool GetReady()
+        {
+            buildSpot = BuildSpot.GetNeedSupplyNear(unit.transform.position);
+            storage = Storage.GetNotEmptyNear(typeof(WoodPile), unit.transform.position);
+            if (buildSpot != null)
+            {
+                if (storage != null)
+                {
+                    Start();
+                    return true;
+                }
+                else if (resource != null)
+                {
+                    resource.hasInteracted = true;
+                    Start();
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        public override void Execute()
+        {
+            float dist;
+            Res resource;
+            Transform moveTo;
+            if (byStorage)
+            {
+                resource = storage.item;
+                moveTo = storage.transform;
+                dist = 2f;
+            }
+            else
+            {
+                resource = this.resource;
+                moveTo = resource.transform;
+                dist = resource.Interact;
+            }
+            unit.MoveTo(moveTo, dist, UnitAnim.Walk, () =>
+            {
+                unit.Action(resource.PickupAnim, 0.5f, () =>
+                {
+                    if (byStorage)
+                        resource = storage.Output();
+                    unit.Pickup(resource);
+                    resource.hasInteracted = true;
+                }, () =>
+                {
+                    unit.MoveTo(buildSpot.transform, buildSpot.Interact, resource.CarryAnim, () =>
+                    {
+                        unit.Action(resource.PlaceAnim, 0.5f, () =>
+                        {
+                            buildSpot.Input(resource);
                         }, () =>
                         {
                             Complete();
@@ -243,7 +312,7 @@ public class Task
 
         public override void Execute()
         {
-            unit.MoveAndActionPeriod(workshop.workLocation, workshop.radius, UnitAnim.Walk, UnitAnim.AxeV, () =>
+            unit.MoveAndActionPeriod(workshop.workLocation, 1f, UnitAnim.Walk, UnitAnim.AxeV, () =>
             {
                 workshop.Process();
                 return !workshop.IsComplete;
@@ -272,7 +341,7 @@ public class Task
         }
         public override void Execute()
         {
-            unit.MoveAndActionPeriod(buildSpot.workLocation, buildSpot.radius, UnitAnim.Walk, UnitAnim.AxeV, () =>
+            unit.MoveAndActionPeriod(buildSpot.workLocation, buildSpot.Interact, UnitAnim.Walk, UnitAnim.AxeV, () =>
             {
                 buildSpot.Process();
                 return !buildSpot.IsComplete;

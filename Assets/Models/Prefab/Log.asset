@@ -12,12 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3463285c18d5abf458de8c1539cabf1b, type: 3}
   m_Name: Log
   m_EditorClassIdentifier: 
-  zhTW: 
+  zhTW: "\u539F\u6728"
   portable: 1
   pickupAnim: take-both
   carryAnim: carry
   placeAnim: place-both
-  interact: 0
+  interact: 3
   buildable: 0
   buildCost:
     log: 0

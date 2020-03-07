@@ -40,6 +40,7 @@ public class ObjectPlacement : MonoBehaviour
         if (build)
         {
             res = Instantiate(buildSpot, MouseRay.Point(), Quaternion.identity);
+            (res as BuildSpot).SetBuildObject(newRes);
         }
         else
         {

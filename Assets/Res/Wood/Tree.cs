@@ -4,11 +4,10 @@ using System.Linq;
 
 public class Tree : MapResource
 {
-    public GameObject leavesGO, woodGO;
-    public int leavesDurability = 6;
-    public int woodDurability = 6;
     public Branches branches;
+    public Leaves leaves;
     public Log log;
+    public Wood wood;
     [Range(1, 6)]
     public int branchesAmount;
     protected override void Gathered()
@@ -20,15 +19,14 @@ public class Tree : MapResource
         rigidbody.mass = 1;
         rigidbody.AddForce(V3Random.DirectionXZ() * 50);
         //rigidbody.AddForce(Vector3.right * 50);
-        FreezeOnTriggerEnter leavesFreezeTrigger = leavesGO.AddComponent<FreezeOnTriggerEnter>();
+        FreezeOnTriggerEnter leavesFreezeTrigger = leaves.gameObject.AddComponent<FreezeOnTriggerEnter>();
         leavesFreezeTrigger.delayTime = 0.2f;
         leavesFreezeTrigger.onEnter = () =>
         {
             rigidbody.Sleep();
             rigidbody.constraints = RigidbodyConstraints.FreezeAll;
-            Leaves leaves = leavesGO.AddComponent<Leaves>();
-            leaves.durability = leavesDurability;
-            leaves.radius = 8;
+            leaves.enabled = true;
+            leaves.transform.SetParent(Game.Group("Leaves"));
             leaves.onGathered = () =>
             {
                 rigidbody.WakeUp();
@@ -40,14 +38,11 @@ public class Tree : MapResource
                 }
             };
         };
-        FreezeOnTriggerEnter woodFreezeTrigger = woodGO.AddComponent<FreezeOnTriggerEnter>();
+        FreezeOnTriggerEnter woodFreezeTrigger = wood.gameObject.AddComponent<FreezeOnTriggerEnter>();
         woodFreezeTrigger.onEnter = () =>
         {
-            Wood wood = woodGO.AddComponent<Wood>();
-            wood.log = log;
-            wood.durability = leavesDurability;
-            wood.radius = 2;
-            woodGO.transform.SetParent(Game.Group("Woods"));
+            wood.enabled = true;
+            wood.transform.SetParent(Game.Group("Woods"));
             Destroy(gameObject);
         };
     }

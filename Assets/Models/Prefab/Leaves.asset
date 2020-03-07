@@ -10,14 +10,14 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 3463285c18d5abf458de8c1539cabf1b, type: 3}
-  m_Name: Tree
+  m_Name: Leaves
   m_EditorClassIdentifier: 
-  zhTW: "\u6A39"
+  zhTW: 
   portable: 0
   pickupAnim: 
   carryAnim: 
   placeAnim: 
-  interact: 4
+  interact: 0
   buildable: 0
   buildCost:
     log: 0

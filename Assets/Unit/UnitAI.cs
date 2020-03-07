@@ -27,10 +27,10 @@ public class UnitAI : Unit
     }
     public void Pickup(Res res)
     {
-        if (res.isSmallObject)
-            res.transform.SetParent(leftHand);
-        else
+        if (res.CarryAnim == UnitAnim.Carry)
             res.transform.SetParent(bothHand);
+        else
+            res.transform.SetParent(leftHand);
         res.transform.localPosition = Vector3.zero;
         res.transform.localRotation = Quaternion.identity;
         Rigidbody rigidbody = res.GetComponent<Rigidbody>();

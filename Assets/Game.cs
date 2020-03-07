@@ -1,20 +1,23 @@
 ﻿using System;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.AI;
 using System.Linq;
-using UnityEngine.EventSystems;
 
 public class Game : MonoBehaviour
 {
     static Game instance;
     static public ObjectPlacement ObjectPlacement;
+    public List<ResProp> resProps;
 
     static public List<UnitAI> units;
     static public List<UnitAI> selectedUnit = new List<UnitAI>();
     void Awake()
     {
         instance = this;
+        foreach (ResProp resProp in resProps)
+        {
+            Res.propDic.Add(Type.GetType(resProp.name), resProp);
+        }
         ObjectPlacement = GetComponent<ObjectPlacement>();
         transform.Find("MainCanvas").gameObject.SetActive(true);
         units = transform.Find("Units").GetComponentsInChildren<UnitAI>().ToList();
