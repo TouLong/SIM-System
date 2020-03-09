@@ -4,15 +4,20 @@ using System.Linq;
 using System.Collections.Generic;
 using System;
 using System.IO;
-using System.Reflection;
 public class ResWindow : EditorWindow
 {
     Vector2 scrollPos;
     public List<Res> resList = new List<Res>();
-    Dictionary<Res, bool> propShow = new Dictionary<Res, bool>();
+    List<ResProp> propList = new List<ResProp>();
+    readonly Dictionary<Res, UIProp> uiProps = new Dictionary<Res, UIProp>();
     List<string> animNames;
-    List<string> typeNames;
-    FieldInfo[] buildCostFields;
+    List<string> resTypes;
+    class UIProp
+    {
+        public bool showGourp = true;
+        public int selectbuildCost;
+    }
+
     [MenuItem("Window/Res Window")]
     public static void ShowWindow()
     {
@@ -32,18 +37,11 @@ public class ResWindow : EditorWindow
             return;
         }
         animNames = typeof(UnitAnim).GetFields().Select(x => (string)x.GetValue(null)).ToList();
-        if (buildCostFields == null)
-            buildCostFields = typeof(BuildCost).GetFields();
         resList = resList.Distinct().ToList();
-        for (int i = 0; i < resList.Count; ++i)
-        {
-            typeNames.Add(resList[i].GetType().ToString());
-            Res res = resList[i];
-            if (!propShow.ContainsKey(res))
-            {
-                propShow.Add(res, true);
-            }
-        }
+        resTypes = resList.Select(x => x.GetType().ToString()).ToList();
+        propList = resList.Select(x => GetResProp(x)).ToList();
+        Res.SetResProp(propList);
+
         UIHelper.Horizontal(() =>
         {
             UIHelper.Button("++", () => ShowAll(true));
@@ -54,55 +52,73 @@ public class ResWindow : EditorWindow
         {
             GUILayout.BeginVertical("Box");
             Res res = resList[i];
-            Type type = res.GetType();
-            ResProp prop = GetResProp(res);
-            if (prop.buildCost == null)
-                prop.buildCost = new BuildCost();
-            BuildCost buildCost = prop.buildCost;
+            ResProp prop = propList[i];
+            if (!uiProps.ContainsKey(res))
+            {
+                uiProps.Add(res, new UIProp());
+            }
+            if (prop.buildCostMeta == null)
+                prop.buildCostMeta = new List<StringInt>();
+            List<StringInt> buildCostMate = prop.buildCostMeta;
             string name = res.GetType().ToString();
-            propShow[res] = EditorGUILayout.Foldout(propShow[res], name);
-            if (propShow[res])
+            UIProp uiProp = uiProps[res];
+            uiProp.showGourp = EditorGUILayout.Foldout(uiProp.showGourp, name);
+            if (uiProp.showGourp)
             {
                 UIHelper.Horizontal(() =>
                 {
                     prop.zhTW = EditorGUILayout.TextField("中文", prop.zhTW);
                     prop.interact = EditorGUILayout.FloatField("互動範圍", prop.interact);
-                });
+                }, 60);
                 UIHelper.Horizontal(() =>
                 {
                     prop.portable = EditorGUILayout.Toggle("可攜帶", prop.portable);
                     prop.buildable = EditorGUILayout.Toggle("可建造", prop.buildable);
                     prop.storable = EditorGUILayout.Toggle("可儲藏", prop.storable);
-                });
+                    prop.isBuildRes = EditorGUILayout.Toggle("建造材料", prop.isBuildRes);
+                }, 45);
                 if (prop.portable)
                 {
-                    prop.carryAnim = animNames[EditorGUILayout.Popup("搬運動畫", Mathf.Max(0, animNames.IndexOf(prop.carryAnim)), animNames.ToArray())];
-                    prop.placeAnim = animNames[EditorGUILayout.Popup("放置動畫", Mathf.Max(0, animNames.IndexOf(prop.placeAnim)), animNames.ToArray())];
-                    prop.pickupAnim = animNames[EditorGUILayout.Popup("拿起動畫.", Mathf.Max(0, animNames.IndexOf(prop.pickupAnim)), animNames.ToArray())];
+                    UIHelper.Horizontal(() =>
+                    {
+                        prop.carryAnim = animNames[EditorGUILayout.Popup("搬運動畫", Mathf.Max(0, animNames.IndexOf(prop.carryAnim)), animNames.ToArray())];
+                        prop.placeAnim = animNames[EditorGUILayout.Popup("放置動畫", Mathf.Max(0, animNames.IndexOf(prop.placeAnim)), animNames.ToArray())];
+                        prop.pickupAnim = animNames[EditorGUILayout.Popup("拿起動畫", Mathf.Max(0, animNames.IndexOf(prop.pickupAnim)), animNames.ToArray())];
+                    }, 50);
                 }
                 if (prop.buildable)
                 {
-                    //foreach (FieldInfo field in buildCostFields)
-                    //{
-                    //    field.SetValue(buildCost, EditorGUILayout.IntField(field.Name, (int)field.GetValue(buildCost)));
-                    //}
+                    List<string> buildResName = buildCostMate.Select(y => y.key).ToList();
+                    List<Type> buildRes = BuildCost.AllTypes.Where(x => !buildResName.Contains(x.Name)).ToList();
+                    UIHelper.Horizontal(() =>
+                    {
+                        uiProp.selectbuildCost = EditorGUILayout.Popup("材料", uiProp.selectbuildCost, buildRes.Select(x => x.Name).ToArray());
+                        UIHelper.Button("+", () =>
+                        {
+                            if (buildRes.Any())
+                                buildCostMate.Add(new StringInt(buildRes[uiProp.selectbuildCost], 1));
+                        });
+                        UIHelper.Button("-", () =>
+                        {
+                            if (buildCostMate.Any())
+                                buildCostMate.RemoveAt(buildCostMate.Count - 1);
+                        });
+                    }, 40);
+                    foreach (StringInt stringInt in buildCostMate)
+                    {
+                        stringInt.value = EditorGUILayout.IntField(stringInt.key, stringInt.value);
+                    }
                 }
                 if (prop.storable)
                 {
-                    int index = 0;
-                    if (prop.storageBy != null)
-                        index = EditorGUILayout.Popup("儲藏", Mathf.Max(0, typeNames.IndexOf(prop.storageBy.ToString())), typeNames.ToArray());
-                    prop.storageBy = Type.GetType(typeNames[index]);
-                }
-                else
-                {
-                    prop.storageBy = null;
+                    prop.storageByMate = resTypes[EditorGUILayout.Popup("儲藏於", Mathf.Max(0, resTypes.IndexOf(prop.storageByMate)), resTypes.ToArray())];
                 }
             }
             //EditorUtility.SetDirty(res);
             EditorUtility.SetDirty(prop);
             GUILayout.EndVertical();
         }
+
         EditorGUILayout.EndScrollView();
     }
 
@@ -111,7 +127,7 @@ public class ResWindow : EditorWindow
         for (int i = 0; i < resList.Count; ++i)
         {
             Res res = resList[i];
-            propShow[res] = show;
+            uiProps[res].showGourp = show;
         }
     }
 

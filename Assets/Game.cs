@@ -14,10 +14,7 @@ public class Game : MonoBehaviour
     void Awake()
     {
         instance = this;
-        foreach (ResProp resProp in resProps)
-        {
-            Res.propDic.Add(Type.GetType(resProp.name), resProp);
-        }
+        Res.SetResProp(resProps);
         ObjectPlacement = GetComponent<ObjectPlacement>();
         transform.Find("MainCanvas").gameObject.SetActive(true);
         units = transform.Find("Units").GetComponentsInChildren<UnitAI>().ToList();
@@ -42,7 +39,7 @@ public class Game : MonoBehaviour
         TaskManager.MakingWoodenPlank(units[3]);
         TaskManager.StorageWood(units[4]);
         TaskManager.StorageWood(units[5]);
-        TaskManager.Add<Task.Storage<Branches, BranchesHeap>>(units[6]);
+        TaskManager.Add<Task.SupplyToBuildSpot>(units[6]);
         TaskManager.Add<Task.Storage<WoodenPlank, WoodenPlankPile>>(units[7]);
         TaskManager.Add<Task.Storage<WoodenPlank, WoodenPlankPile>>(units[8]);
         TaskManager.Add<Task.Storage<Firewood, FirewoodPile>>(units[9]);
@@ -55,6 +52,7 @@ public class Game : MonoBehaviour
         TaskManager.Update();
         if (Input.GetKeyDown(KeyCode.Q))
         {
+            TaskManager.AllStop();
         }
         if (Input.GetKeyDown(KeyCode.W))
         {

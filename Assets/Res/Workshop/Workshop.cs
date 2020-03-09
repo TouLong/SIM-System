@@ -10,7 +10,6 @@ public class Workshop : Res
     public bool IsComplete => processing >= complete;
     public bool IsEmpty => processing == 0;
     public bool CanProcessing => processing > 0 && processing < complete;
-    public Transform workLocation;
     public virtual void Process()
     {
 

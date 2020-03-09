@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 7112764434526654167}
   - component: {fileID: 5899154226192109466}
   m_Layer: 0
-  m_Name: Log-12
+  m_Name: wood-12
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -39,7 +39,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 139397704315930508}
-  m_Mesh: {fileID: 7998806513205308417, guid: aae163860c8a24444b7c8a166b5bb4b9, type: 3}
+  m_Mesh: {fileID: 2956990802375617159, guid: aae163860c8a24444b7c8a166b5bb4b9, type: 3}
 --- !u!23 &5899154226192109466
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -57,8 +57,8 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 8652659587987991437, guid: aae163860c8a24444b7c8a166b5bb4b9, type: 3}
-  - {fileID: 2585547607649403751, guid: aae163860c8a24444b7c8a166b5bb4b9, type: 3}
+  - {fileID: 5610708413796600885, guid: aae163860c8a24444b7c8a166b5bb4b9, type: 3}
+  - {fileID: 5125633545339185905, guid: aae163860c8a24444b7c8a166b5bb4b9, type: 3}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -124,13 +124,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   hasInteracted: 0
-  isSmallObject: 0
-  radius: 5
-  prop: {fileID: 0}
   capacity: 12
   count: 0
   inventory: {fileID: 129244542037774411}
-  item: {fileID: 3770806610314980723, guid: c16924d62a2857f4493d210cf13c473a, type: 3}
+  item: {fileID: 8912060006742860443, guid: c16924d62a2857f4493d210cf13c473a, type: 3}
 --- !u!1 &1183677683392280502
 GameObject:
   m_ObjectHideFlags: 0
@@ -143,7 +140,7 @@ GameObject:
   - component: {fileID: 6144994755513379470}
   - component: {fileID: 5183460552076642382}
   m_Layer: 0
-  m_Name: Log-3
+  m_Name: wood-3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -170,7 +167,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1183677683392280502}
-  m_Mesh: {fileID: 7998806513205308417, guid: aae163860c8a24444b7c8a166b5bb4b9, type: 3}
+  m_Mesh: {fileID: 2956990802375617159, guid: aae163860c8a24444b7c8a166b5bb4b9, type: 3}
 --- !u!23 &5183460552076642382
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -188,8 +185,8 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 8652659587987991437, guid: aae163860c8a24444b7c8a166b5bb4b9, type: 3}
-  - {fileID: 2585547607649403751, guid: aae163860c8a24444b7c8a166b5bb4b9, type: 3}
+  - {fileID: 5610708413796600885, guid: aae163860c8a24444b7c8a166b5bb4b9, type: 3}
+  - {fileID: 5125633545339185905, guid: aae163860c8a24444b7c8a166b5bb4b9, type: 3}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -222,7 +219,7 @@ GameObject:
   - component: {fileID: 8573763729616807280}
   - component: {fileID: 7567987851046932474}
   m_Layer: 0
-  m_Name: Log-9
+  m_Name: wood-9
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -249,7 +246,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1502216728977961434}
-  m_Mesh: {fileID: 7998806513205308417, guid: aae163860c8a24444b7c8a166b5bb4b9, type: 3}
+  m_Mesh: {fileID: 2956990802375617159, guid: aae163860c8a24444b7c8a166b5bb4b9, type: 3}
 --- !u!23 &7567987851046932474
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -267,8 +264,8 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 8652659587987991437, guid: aae163860c8a24444b7c8a166b5bb4b9, type: 3}
-  - {fileID: 2585547607649403751, guid: aae163860c8a24444b7c8a166b5bb4b9, type: 3}
+  - {fileID: 5610708413796600885, guid: aae163860c8a24444b7c8a166b5bb4b9, type: 3}
+  - {fileID: 5125633545339185905, guid: aae163860c8a24444b7c8a166b5bb4b9, type: 3}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -301,7 +298,7 @@ GameObject:
   - component: {fileID: 5842054164449216255}
   - component: {fileID: 3133846521859748576}
   m_Layer: 0
-  m_Name: Log-6
+  m_Name: wood-6
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -328,7 +325,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2390454248638761065}
-  m_Mesh: {fileID: 7998806513205308417, guid: aae163860c8a24444b7c8a166b5bb4b9, type: 3}
+  m_Mesh: {fileID: 2956990802375617159, guid: aae163860c8a24444b7c8a166b5bb4b9, type: 3}
 --- !u!23 &3133846521859748576
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -346,8 +343,8 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 8652659587987991437, guid: aae163860c8a24444b7c8a166b5bb4b9, type: 3}
-  - {fileID: 2585547607649403751, guid: aae163860c8a24444b7c8a166b5bb4b9, type: 3}
+  - {fileID: 5610708413796600885, guid: aae163860c8a24444b7c8a166b5bb4b9, type: 3}
+  - {fileID: 5125633545339185905, guid: aae163860c8a24444b7c8a166b5bb4b9, type: 3}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -380,7 +377,7 @@ GameObject:
   - component: {fileID: 444383767143036525}
   - component: {fileID: 2996081754795460835}
   m_Layer: 0
-  m_Name: Log-11
+  m_Name: wood-11
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -407,7 +404,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2701110588276111322}
-  m_Mesh: {fileID: 7998806513205308417, guid: aae163860c8a24444b7c8a166b5bb4b9, type: 3}
+  m_Mesh: {fileID: 2956990802375617159, guid: aae163860c8a24444b7c8a166b5bb4b9, type: 3}
 --- !u!23 &2996081754795460835
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -425,8 +422,8 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 8652659587987991437, guid: aae163860c8a24444b7c8a166b5bb4b9, type: 3}
-  - {fileID: 2585547607649403751, guid: aae163860c8a24444b7c8a166b5bb4b9, type: 3}
+  - {fileID: 5610708413796600885, guid: aae163860c8a24444b7c8a166b5bb4b9, type: 3}
+  - {fileID: 5125633545339185905, guid: aae163860c8a24444b7c8a166b5bb4b9, type: 3}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -501,7 +498,7 @@ GameObject:
   - component: {fileID: 9017547127357825825}
   - component: {fileID: 1524626641533623199}
   m_Layer: 0
-  m_Name: Log-10
+  m_Name: wood-10
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -528,7 +525,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2944577202055152616}
-  m_Mesh: {fileID: 7998806513205308417, guid: aae163860c8a24444b7c8a166b5bb4b9, type: 3}
+  m_Mesh: {fileID: 2956990802375617159, guid: aae163860c8a24444b7c8a166b5bb4b9, type: 3}
 --- !u!23 &1524626641533623199
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -546,8 +543,8 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 8652659587987991437, guid: aae163860c8a24444b7c8a166b5bb4b9, type: 3}
-  - {fileID: 2585547607649403751, guid: aae163860c8a24444b7c8a166b5bb4b9, type: 3}
+  - {fileID: 5610708413796600885, guid: aae163860c8a24444b7c8a166b5bb4b9, type: 3}
+  - {fileID: 5125633545339185905, guid: aae163860c8a24444b7c8a166b5bb4b9, type: 3}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -580,7 +577,7 @@ GameObject:
   - component: {fileID: 5185435906279995855}
   - component: {fileID: 7182458772108887225}
   m_Layer: 0
-  m_Name: Log-5
+  m_Name: wood-5
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -607,7 +604,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3029978475127270844}
-  m_Mesh: {fileID: 7998806513205308417, guid: aae163860c8a24444b7c8a166b5bb4b9, type: 3}
+  m_Mesh: {fileID: 2956990802375617159, guid: aae163860c8a24444b7c8a166b5bb4b9, type: 3}
 --- !u!23 &7182458772108887225
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -625,8 +622,8 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 8652659587987991437, guid: aae163860c8a24444b7c8a166b5bb4b9, type: 3}
-  - {fileID: 2585547607649403751, guid: aae163860c8a24444b7c8a166b5bb4b9, type: 3}
+  - {fileID: 5610708413796600885, guid: aae163860c8a24444b7c8a166b5bb4b9, type: 3}
+  - {fileID: 5125633545339185905, guid: aae163860c8a24444b7c8a166b5bb4b9, type: 3}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -659,7 +656,7 @@ GameObject:
   - component: {fileID: 1104345772733524881}
   - component: {fileID: 6930837056417486313}
   m_Layer: 0
-  m_Name: Log-7
+  m_Name: wood-7
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -686,7 +683,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4419734244635005296}
-  m_Mesh: {fileID: 7998806513205308417, guid: aae163860c8a24444b7c8a166b5bb4b9, type: 3}
+  m_Mesh: {fileID: 2956990802375617159, guid: aae163860c8a24444b7c8a166b5bb4b9, type: 3}
 --- !u!23 &6930837056417486313
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -704,8 +701,8 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 8652659587987991437, guid: aae163860c8a24444b7c8a166b5bb4b9, type: 3}
-  - {fileID: 2585547607649403751, guid: aae163860c8a24444b7c8a166b5bb4b9, type: 3}
+  - {fileID: 5610708413796600885, guid: aae163860c8a24444b7c8a166b5bb4b9, type: 3}
+  - {fileID: 5125633545339185905, guid: aae163860c8a24444b7c8a166b5bb4b9, type: 3}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -738,7 +735,7 @@ GameObject:
   - component: {fileID: 8795058837456975144}
   - component: {fileID: 7578931595754156896}
   m_Layer: 0
-  m_Name: Log-8
+  m_Name: wood-8
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -765,7 +762,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5399490788117436183}
-  m_Mesh: {fileID: 7998806513205308417, guid: aae163860c8a24444b7c8a166b5bb4b9, type: 3}
+  m_Mesh: {fileID: 2956990802375617159, guid: aae163860c8a24444b7c8a166b5bb4b9, type: 3}
 --- !u!23 &7578931595754156896
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -783,8 +780,8 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 8652659587987991437, guid: aae163860c8a24444b7c8a166b5bb4b9, type: 3}
-  - {fileID: 2585547607649403751, guid: aae163860c8a24444b7c8a166b5bb4b9, type: 3}
+  - {fileID: 5610708413796600885, guid: aae163860c8a24444b7c8a166b5bb4b9, type: 3}
+  - {fileID: 5125633545339185905, guid: aae163860c8a24444b7c8a166b5bb4b9, type: 3}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -817,7 +814,7 @@ GameObject:
   - component: {fileID: 7389604239788224772}
   - component: {fileID: 4152766910852021294}
   m_Layer: 0
-  m_Name: Log-1
+  m_Name: wood-1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -844,7 +841,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5872928885618107258}
-  m_Mesh: {fileID: 7998806513205308417, guid: aae163860c8a24444b7c8a166b5bb4b9, type: 3}
+  m_Mesh: {fileID: 2956990802375617159, guid: aae163860c8a24444b7c8a166b5bb4b9, type: 3}
 --- !u!23 &4152766910852021294
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -862,8 +859,8 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 8652659587987991437, guid: aae163860c8a24444b7c8a166b5bb4b9, type: 3}
-  - {fileID: 2585547607649403751, guid: aae163860c8a24444b7c8a166b5bb4b9, type: 3}
+  - {fileID: 5610708413796600885, guid: aae163860c8a24444b7c8a166b5bb4b9, type: 3}
+  - {fileID: 5125633545339185905, guid: aae163860c8a24444b7c8a166b5bb4b9, type: 3}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -896,7 +893,7 @@ GameObject:
   - component: {fileID: 1734672717232944581}
   - component: {fileID: 731224927883057447}
   m_Layer: 0
-  m_Name: Log-4
+  m_Name: wood-4
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -923,7 +920,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7386769535428204542}
-  m_Mesh: {fileID: 7998806513205308417, guid: aae163860c8a24444b7c8a166b5bb4b9, type: 3}
+  m_Mesh: {fileID: 2956990802375617159, guid: aae163860c8a24444b7c8a166b5bb4b9, type: 3}
 --- !u!23 &731224927883057447
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -941,8 +938,8 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 8652659587987991437, guid: aae163860c8a24444b7c8a166b5bb4b9, type: 3}
-  - {fileID: 2585547607649403751, guid: aae163860c8a24444b7c8a166b5bb4b9, type: 3}
+  - {fileID: 5610708413796600885, guid: aae163860c8a24444b7c8a166b5bb4b9, type: 3}
+  - {fileID: 5125633545339185905, guid: aae163860c8a24444b7c8a166b5bb4b9, type: 3}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -975,7 +972,7 @@ GameObject:
   - component: {fileID: 7507600848632297403}
   - component: {fileID: 6862428064400422285}
   m_Layer: 0
-  m_Name: Log-2
+  m_Name: wood-2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1002,7 +999,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8851079380744390393}
-  m_Mesh: {fileID: 7998806513205308417, guid: aae163860c8a24444b7c8a166b5bb4b9, type: 3}
+  m_Mesh: {fileID: 2956990802375617159, guid: aae163860c8a24444b7c8a166b5bb4b9, type: 3}
 --- !u!23 &6862428064400422285
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -1020,8 +1017,8 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 8652659587987991437, guid: aae163860c8a24444b7c8a166b5bb4b9, type: 3}
-  - {fileID: 2585547607649403751, guid: aae163860c8a24444b7c8a166b5bb4b9, type: 3}
+  - {fileID: 5610708413796600885, guid: aae163860c8a24444b7c8a166b5bb4b9, type: 3}
+  - {fileID: 5125633545339185905, guid: aae163860c8a24444b7c8a166b5bb4b9, type: 3}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

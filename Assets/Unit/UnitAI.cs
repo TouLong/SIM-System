@@ -18,8 +18,9 @@ public class UnitAI : Unit
     public Transform rightHand, leftHand, bothHand;
     [HideInInspector]
     public bool isPending = true;
-    public Res holdingObject;
+    public Res holdingRes;
     public List<Task> tasks;
+    public Task task;
     new void Awake()
     {
         base.Awake();
@@ -38,6 +39,18 @@ public class UnitAI : Unit
             rigidbody.constraints = RigidbodyConstraints.FreezeAll;
         Collider collider = res.GetComponent<Collider>();
         collider.enabled = false;
-        holdingObject = res;
+        holdingRes = res;
+    }
+    public void Drop()
+    {
+        if (holdingRes == null)
+            return;
+        holdingRes.transform.SetParent(null);
+        holdingRes.hasInteracted = false;
+        Rigidbody rigidbody = holdingRes.GetComponent<Rigidbody>();
+        if (rigidbody != null)
+            rigidbody.constraints = RigidbodyConstraints.None;
+        Collider collider = holdingRes.GetComponent<Collider>();
+        collider.enabled = true;
     }
 }

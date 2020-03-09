@@ -13,15 +13,13 @@ MonoBehaviour:
   m_Name: Branches
   m_EditorClassIdentifier: 
   zhTW: "\u6A39\u679D"
+  interact: 2
   portable: 1
   pickupAnim: left-grab
   carryAnim: walk
   placeAnim: left-grab
-  interact: 2
+  storable: 1
+  storageByMate: BranchesHeap
   buildable: 0
-  buildCost:
-    log: 0
-    woodenPlank: 0
-    firewood: 0
-    branches: 0
-    rock: 0
+  buildCostMeta: []
+  isBuildRes: 1

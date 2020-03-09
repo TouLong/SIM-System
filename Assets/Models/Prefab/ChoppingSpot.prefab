@@ -91,7 +91,7 @@ GameObject:
   - component: {fileID: 4947094682688502983}
   - component: {fileID: 3434613350942223874}
   m_Layer: 0
-  m_Name: log
+  m_Name: wood
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -118,7 +118,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1535501742932995455}
-  m_Mesh: {fileID: 7998806513205308417, guid: aae163860c8a24444b7c8a166b5bb4b9, type: 3}
+  m_Mesh: {fileID: 2956990802375617159, guid: aae163860c8a24444b7c8a166b5bb4b9, type: 3}
 --- !u!23 &3434613350942223874
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -136,8 +136,8 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 8652659587987991437, guid: aae163860c8a24444b7c8a166b5bb4b9, type: 3}
-  - {fileID: 2585547607649403751, guid: aae163860c8a24444b7c8a166b5bb4b9, type: 3}
+  - {fileID: 5610708413796600885, guid: aae163860c8a24444b7c8a166b5bb4b9, type: 3}
+  - {fileID: 5125633545339185905, guid: aae163860c8a24444b7c8a166b5bb4b9, type: 3}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -586,7 +586,6 @@ Transform:
   m_Children:
   - {fileID: 3768102431322347711}
   - {fileID: 8914357101456691871}
-  - {fileID: 8914357101235093847}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -597,7 +596,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5531826673607674503}
-  m_Mesh: {fileID: -5812385688924721833, guid: 5ad0ca6e5267c9f4a81d13e17f8983f0, type: 3}
+  m_Mesh: {fileID: -5812385688924721833, guid: 21c2635ed809fb946be0ac069d8af64e, type: 3}
 --- !u!23 &2803733968429841931
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -615,8 +614,8 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2585547607649403751, guid: 5ad0ca6e5267c9f4a81d13e17f8983f0, type: 3}
-  - {fileID: 8652659587987991437, guid: 5ad0ca6e5267c9f4a81d13e17f8983f0, type: 3}
+  - {fileID: 5125633545339185905, guid: 21c2635ed809fb946be0ac069d8af64e, type: 3}
+  - {fileID: 5610708413796600885, guid: 21c2635ed809fb946be0ac069d8af64e, type: 3}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -650,7 +649,7 @@ MeshCollider:
   serializedVersion: 3
   m_Convex: 1
   m_CookingOptions: 14
-  m_Mesh: {fileID: -5812385688924721833, guid: 5ad0ca6e5267c9f4a81d13e17f8983f0, type: 3}
+  m_Mesh: {fileID: -5812385688924721833, guid: 21c2635ed809fb946be0ac069d8af64e, type: 3}
 --- !u!114 &5531826673607674502
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -664,12 +663,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   hasInteracted: 0
-  isSmallObject: 0
-  radius: 4
-  prop: {fileID: 0}
   product: {fileID: 5363221633601681877, guid: 152d892c6adeeea4e8567115395c24cf, type: 3}
-  workLocation: {fileID: 8914357101235093847}
-  log: {fileID: 1535501742932995455}
+  wood: {fileID: 1535501742932995455}
   firewoods:
   - {fileID: 1958827263151490377}
   - {fileID: 8209993915007619300}
@@ -758,36 +753,6 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
---- !u!1 &8914357101235093840
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 8914357101235093847}
-  m_Layer: 0
-  m_Name: WorkLocation
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &8914357101235093847
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8914357101235093840}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0, y: -0, z: -3}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 4982063663713646499}
-  m_RootOrder: 2
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &8914357101456691864
 GameObject:
   m_ObjectHideFlags: 0

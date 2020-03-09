@@ -2,7 +2,7 @@
 
 public class ChoppingSpot : Workshop
 {
-    public GameObject log;
+    public GameObject wood;
     public Transform[] firewoods;
     void Start()
     {
@@ -18,14 +18,14 @@ public class ChoppingSpot : Workshop
     }
     public override void Input(Res res)
     {
-        log.SetActive(true);
+        wood.SetActive(true);
         processing = 1;
         Destroy(res.gameObject);
     }
 
     void ProcessComplete()
     {
-        log.SetActive(false);
+        wood.SetActive(false);
         processing = complete;
         foreach (Transform trans in firewoods)
         {

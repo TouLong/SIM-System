@@ -7,14 +7,14 @@ public class BuildSpot : Workshop
     BuildCost currentCost;
     static public BuildSpot GetNeedSupplyNear(Vector3 position)
     {
-        return Res.GetWhereNear<BuildSpot>(x => !x.neededCost.IsEmpty, position);
+        return GetWhereNear<BuildSpot>(x => !x.neededCost.IsEmpty, position);
     }
     public void SetBuildObject(Res res)
     {
         product = res;
         neededCost = product.BuildCost.Clone;
         currentCost = new BuildCost();
-        complete = neededCost.Count;
+        complete = neededCost.ValueCount + 1;
     }
     public override void Process()
     {
@@ -26,9 +26,9 @@ public class BuildSpot : Workshop
     }
     public override void Input(Res res)
     {
+        currentCost.Modify(res.GetType(), 1);
         if (neededCost.IsEmpty && product.BuildCost.IsEqual(currentCost))
             processing = 1;
-        currentCost.Modify(res.GetType(), 1);
         Destroy(res.gameObject);
     }
     void ProcessComplete()

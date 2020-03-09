@@ -12,16 +12,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3463285c18d5abf458de8c1539cabf1b, type: 3}
   m_Name: Wood
   m_EditorClassIdentifier: 
-  zhTW: "\u6728"
-  portable: 0
-  pickupAnim: 
-  carryAnim: 
-  placeAnim: 
-  interact: 4
+  zhTW: "\u6728\u982D"
+  interact: 3
+  portable: 1
+  pickupAnim: take-both
+  carryAnim: carry
+  placeAnim: place-both
+  storable: 1
+  storageByMate: WoodPile
   buildable: 0
-  buildCost:
-    log: 0
-    woodenPlank: 0
-    firewood: 0
-    branches: 0
-    rock: 0
+  buildCostMeta: []
+  isBuildRes: 1

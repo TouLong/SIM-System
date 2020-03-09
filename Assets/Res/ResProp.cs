@@ -1,6 +1,5 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
-using System.Linq;
 using System;
 public class ResProp : ScriptableObject
 {
@@ -11,25 +10,21 @@ public class ResProp : ScriptableObject
     public string carryAnim;
     public string placeAnim;
     public bool storable;
+    public string storageByMate;
     public Type storageBy;
     public bool buildable;
+    public List<StringInt> buildCostMeta;
     public BuildCost buildCost;
+    public bool isBuildRes;
 }
-[System.Serializable]
-public class BuildCost : Dictionary<Type, int>
+[Serializable]
+public class StringInt
 {
-    public BuildCost() : base() { }
-    public BuildCost(IDictionary<Type, int> dictionary) : base(dictionary) { }
-    public BuildCost Clone => new BuildCost(this);
-    public bool IsEmpty => Values.Sum() == 0;
-    public int ValueCount => Values.Sum();
-    public bool IsEqual(BuildCost buildCost)
+    public string key = "";
+    public int value = 0;
+    public StringInt(Type key, int value)
     {
-        return Values == buildCost.Values;
-    }
-    public void Modify(Type res, int amount)
-    {
-        if (TryGetValue(res, out int v))
-            this[res] += Mathf.Max(0, v + amount);
+        this.key = key.Name;
+        this.value = value;
     }
 }

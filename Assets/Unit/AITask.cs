@@ -1,8 +1,9 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
+using System;
 using UnityEngine;
 public class TaskManager
 {
+
     static public void Add<T>(UnitAI unit) where T : Task, new()
     {
         unit.tasks.Add(new T() { unit = unit });
@@ -20,31 +21,43 @@ public class TaskManager
         {
             if (unit.isPending)
             {
-                Task task = unit.tasks.FirstOrDefault(t => t.GetReady());
-                if (task != null)
-                    task.Execute();
+                foreach (Task task in unit.tasks)
+                {
+                    if (task.GetReady())
+                    {
+                        task.Execute();
+                        break;
+                    }
+                }
             }
+        }
+    }
+    static public void AllStop()
+    {
+        foreach (UnitAI unit in Game.units)
+        {
+            unit.task?.Cancel();
         }
     }
     static public void Logging(UnitAI unit)
     {
-        Add<Task.Gather<Wood>>(unit);
+        Add<Task.Gather<Log>>(unit);
         Add<Task.Gather<Leaves>>(unit);
         Add<Task.Gather<Tree>>(unit);
     }
     static public void MakingWoodenPlank(UnitAI unit)
     {
         Add<Task.Make<Sawhorse>>(unit);
-        Add<Task.SupplyToWorkshop<Sawhorse, Log, WoodPile>>(unit);
+        Add<Task.SupplyToWorkshop<Sawhorse, Wood, WoodPile>>(unit);
     }
     static public void MakingFirewood(UnitAI unit)
     {
         Add<Task.Make<ChoppingSpot>>(unit);
-        Add<Task.SupplyToWorkshop<ChoppingSpot, Log, WoodPile>>(unit);
+        Add<Task.SupplyToWorkshop<ChoppingSpot, Wood, WoodPile>>(unit);
     }
     static public void StorageWood(UnitAI unit)
     {
-        Add<Task.Storage<Log, WoodPile>>(unit);
+        Add<Task.Storage<Wood, WoodPile>>(unit);
         Add<Task.Storage<Branches, BranchesHeap>>(unit);
     }
 }
@@ -58,21 +71,18 @@ public class Task
     {
         return default;
     }
-    public virtual void Execute()
-    {
-
-    }
-
-    public virtual void Start()
+    public virtual void Execute() { }
+    public virtual void Cancel() { }
+    public void Start()
     {
         unit.isPending = false;
+        unit.task = this;
     }
-
-    public virtual void Complete()
+    public void End()
     {
         unit.isPending = true;
+        unit.task = null;
     }
-
     #endregion
 
     public class Gather<T> : Task where T : MapResource
@@ -101,10 +111,15 @@ public class Task
             }, () =>
             {
                 res.hasInteracted = false;
-                Complete();
+                End();
             });
         }
-
+        public override void Cancel()
+        {
+            res.hasInteracted = false;
+            End();
+            unit.StopAction();
+        }
     }
 
     public class Storage<R, S> : Task where R : Res where S : Storage
@@ -142,13 +157,19 @@ public class Task
                             storage.Input(res);
                         }, () =>
                         {
-                            Complete();
+                            End();
                         });
                     });
                 });
             });
         }
-
+        public override void Cancel()
+        {
+            res.hasInteracted = false;
+            End();
+            unit.Drop();
+            unit.StopAction();
+        }
     }
 
     public class SupplyToWorkshop<W, R, S> : Task where W : Workshop where R : MapResource where S : Storage
@@ -216,7 +237,7 @@ public class Task
                             workshop.Input(resource);
                         }, () =>
                         {
-                            Complete();
+                            End();
                         });
                     });
                 });
@@ -227,23 +248,18 @@ public class Task
     public class SupplyToBuildSpot : Task
     {
         public BuildSpot buildSpot;
-        public MapResource resource;
         public Storage storage;
-        bool byStorage;
         public override bool GetReady()
         {
             buildSpot = BuildSpot.GetNeedSupplyNear(unit.transform.position);
-            storage = Storage.GetNotEmptyNear(typeof(WoodPile), unit.transform.position);
-            if (buildSpot != null)
+            if (buildSpot == null)
+                return false;
+            foreach (Type type in buildSpot.neededCost.Keys)
             {
+                storage = Storage.GetNotEmptyNear(Res.Prop(type).storageBy, unit.transform.position);
                 if (storage != null)
                 {
-                    Start();
-                    return true;
-                }
-                else if (resource != null)
-                {
-                    resource.hasInteracted = true;
+                    buildSpot.neededCost.Modify(type, -1);
                     Start();
                     return true;
                 }
@@ -253,27 +269,12 @@ public class Task
 
         public override void Execute()
         {
-            float dist;
-            Res resource;
-            Transform moveTo;
-            if (byStorage)
+            Res resource = null;
+            unit.MoveTo(storage.transform, storage.Interact, UnitAnim.Walk, () =>
             {
-                resource = storage.item;
-                moveTo = storage.transform;
-                dist = 2f;
-            }
-            else
-            {
-                resource = this.resource;
-                moveTo = resource.transform;
-                dist = resource.Interact;
-            }
-            unit.MoveTo(moveTo, dist, UnitAnim.Walk, () =>
-            {
-                unit.Action(resource.PickupAnim, 0.5f, () =>
+                unit.Action(storage.item.PickupAnim, 0.5f, () =>
                 {
-                    if (byStorage)
-                        resource = storage.Output();
+                    resource = storage.Output();
                     unit.Pickup(resource);
                     resource.hasInteracted = true;
                 }, () =>
@@ -285,7 +286,7 @@ public class Task
                             buildSpot.Input(resource);
                         }, () =>
                         {
-                            Complete();
+                            End();
                         });
                     });
                 });
@@ -312,15 +313,21 @@ public class Task
 
         public override void Execute()
         {
-            unit.MoveAndActionPeriod(workshop.workLocation, 1f, UnitAnim.Walk, UnitAnim.AxeV, () =>
+            unit.MoveAndActionPeriod(workshop.transform, workshop.Interact, UnitAnim.Walk, UnitAnim.AxeV, () =>
             {
                 workshop.Process();
                 return !workshop.IsComplete;
             }, () =>
             {
                 workshop.hasInteracted = false;
-                Complete();
+                End();
             });
+        }
+        public override void Cancel()
+        {
+            workshop.hasInteracted = false;
+            End();
+            unit.StopAction();
         }
     }
 
@@ -329,7 +336,7 @@ public class Task
         BuildSpot buildSpot;
         public override bool GetReady()
         {
-            buildSpot = Res.GetAccessNear<BuildSpot>(unit.transform.position);
+            buildSpot = Workshop.GetCanProcessingNear<BuildSpot>(unit.transform.position);
             if (buildSpot != null)
             {
                 buildSpot.hasInteracted = true;
@@ -341,14 +348,20 @@ public class Task
         }
         public override void Execute()
         {
-            unit.MoveAndActionPeriod(buildSpot.workLocation, buildSpot.Interact, UnitAnim.Walk, UnitAnim.AxeV, () =>
+            unit.MoveAndActionPeriod(buildSpot.transform, buildSpot.Interact, UnitAnim.Walk, UnitAnim.AxeV, () =>
             {
                 buildSpot.Process();
                 return !buildSpot.IsComplete;
             }, () =>
             {
-                Complete();
+                End();
             });
+        }
+        public override void Cancel()
+        {
+            buildSpot.hasInteracted = false;
+            End();
+            unit.StopAction();
         }
     }
 }

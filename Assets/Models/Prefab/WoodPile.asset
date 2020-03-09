@@ -13,15 +13,13 @@ MonoBehaviour:
   m_Name: WoodPile
   m_EditorClassIdentifier: 
   zhTW: "\u539F\u6728\u5806"
+  interact: 5
   portable: 0
   pickupAnim: 
   carryAnim: 
   placeAnim: 
-  interact: 5
+  storable: 0
+  storageByMate: 
   buildable: 0
-  buildCost:
-    log: 0
-    woodenPlank: 0
-    firewood: 0
-    branches: 0
-    rock: 0
+  buildCostMeta: []
+  isBuildRes: 0

@@ -13,15 +13,13 @@ MonoBehaviour:
   m_Name: WoodenPlank
   m_EditorClassIdentifier: 
   zhTW: "\u6728\u677F"
+  interact: 2
   portable: 1
   pickupAnim: left-grab
   carryAnim: walk
   placeAnim: left-grab
-  interact: 2
+  storable: 1
+  storageByMate: WoodenPlankPile
   buildable: 0
-  buildCost:
-    log: 0
-    woodenPlank: 0
-    firewood: 0
-    branches: 0
-    rock: 0
+  buildCostMeta: []
+  isBuildRes: 1

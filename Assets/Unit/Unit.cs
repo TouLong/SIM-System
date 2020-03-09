@@ -93,7 +93,7 @@ public class Unit : MonoBehaviour
     }
     void Idle()
     {
-        if (Vector3.Distance(new Vector3(targetPos.x, transform.position.y, targetPos.z), transform.position) <= 0.1f)
+        if (Vector3.Distance(new Vector3(targetPos.x, transform.position.y, targetPos.z), transform.position) <= 0.5f)
             targetPos = V3Random.DirectionXZ() * UnityEngine.Random.Range(3, 10) + transform.position;
         else
             navMeshAgent.SetDestination(targetPos);

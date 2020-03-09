@@ -13,15 +13,15 @@ MonoBehaviour:
   m_Name: ChoppingSpot
   m_EditorClassIdentifier: 
   zhTW: "\u6728\u67F4\u7AD9"
+  interact: 4
   portable: 0
   pickupAnim: 
   carryAnim: 
   placeAnim: 
-  interact: 4
-  buildable: 0
-  buildCost:
-    log: 0
-    woodenPlank: 0
-    firewood: 0
-    branches: 0
-    rock: 0
+  storable: 0
+  storageByMate: 
+  buildable: 1
+  buildCostMeta:
+  - key: Wood
+    value: 1
+  isBuildRes: 0

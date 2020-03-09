@@ -13,15 +13,13 @@ MonoBehaviour:
   m_Name: Log
   m_EditorClassIdentifier: 
   zhTW: "\u539F\u6728"
-  portable: 1
-  pickupAnim: take-both
-  carryAnim: carry
-  placeAnim: place-both
-  interact: 3
+  interact: 4
+  portable: 0
+  pickupAnim: 
+  carryAnim: 
+  placeAnim: 
+  storable: 0
+  storageByMate: 
   buildable: 0
-  buildCost:
-    log: 0
-    woodenPlank: 0
-    firewood: 0
-    branches: 0
-    rock: 0
+  buildCostMeta: []
+  isBuildRes: 0

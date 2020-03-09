@@ -121,8 +121,8 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 8652659587987991437, guid: aae163860c8a24444b7c8a166b5bb4b9, type: 3}
-  - {fileID: 2585547607649403751, guid: aae163860c8a24444b7c8a166b5bb4b9, type: 3}
+  - {fileID: 5610708413796600885, guid: aae163860c8a24444b7c8a166b5bb4b9, type: 3}
+  - {fileID: 5125633545339185905, guid: aae163860c8a24444b7c8a166b5bb4b9, type: 3}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -186,6 +186,3 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   hasInteracted: 0
-  isSmallObject: 1
-  radius: 3
-  prop: {fileID: 0}

@@ -12,16 +12,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3463285c18d5abf458de8c1539cabf1b, type: 3}
   m_Name: Leaves
   m_EditorClassIdentifier: 
-  zhTW: 
+  zhTW: "\u6A39\u8449"
+  interact: 5
   portable: 0
   pickupAnim: 
   carryAnim: 
   placeAnim: 
-  interact: 0
+  storable: 0
+  storageByMate: 
   buildable: 0
-  buildCost:
-    log: 0
-    woodenPlank: 0
-    firewood: 0
-    branches: 0
-    rock: 0
+  buildCostMeta: []
+  isBuildRes: 0

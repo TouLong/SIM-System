@@ -6,31 +6,53 @@ using System.Linq;
 
 public class Res : MonoBehaviour
 {
+    public class ResData : List<Res>
+    {
+        public ResProp prop;
+    }
     #region static
-    static readonly Dictionary<Type, List<Res>> resDic = new Dictionary<Type, List<Res>>();
-    static public Dictionary<Type, ResProp> propDic = new Dictionary<Type, ResProp>();
-    public float Interact => propDic[GetType()].interact;
-    public string PickupAnim => propDic[GetType()].pickupAnim;
-    public string PlaceAnim => propDic[GetType()].placeAnim;
-    public string CarryAnim => propDic[GetType()].carryAnim;
-    public BuildCost BuildCost => propDic[GetType()].buildCost;
+    static readonly Dictionary<Type, ResData> resDic = new Dictionary<Type, ResData>();
+    public static List<Type> AllTypes => resDic.Keys.ToList();
+    public static ResProp Prop(Type type) => resDic[type].prop;
+    public static void SetResProp(List<ResProp> resProps)
+    {
+        BuildCost.AllTypes = new List<Type>();
+        foreach (ResProp resProp in resProps)
+        {
+            Type type = Type.GetType(resProp.name);
+            if (!resDic.ContainsKey(type))
+                resDic.Add(type, new ResData());
+            resDic[type].prop = resProp;
+            if (resProp.isBuildRes)
+                BuildCost.AllTypes.Add(type);
+            if (resProp.buildable)
+                resProp.buildCost = new BuildCost(resProp.buildCostMeta);
+            if (resProp.storable)
+                resProp.storageBy = Type.GetType(resProp.storageByMate);
+        }
+    }
+    public static IEnumerable<Res> Get(Type type)
+    {
+        resDic.TryGetValue(type, out ResData value);
+        return value;
+    }
     public static IEnumerable<T> Get<T>(Type type) where T : Res
     {
-        if (resDic.TryGetValue(type, out List<Res> value))
+        if (resDic.TryGetValue(type, out ResData value))
             return value.OfType<T>();
         else
             return null;
     }
     public static IEnumerable<T> Get<T>() where T : Res
     {
-        if (resDic.TryGetValue(typeof(T), out List<Res> value))
+        if (resDic.TryGetValue(typeof(T), out ResData value))
             return value.OfType<T>();
         else
             return null;
     }
     public static IEnumerable<T> GetWhere<T>(Func<T, bool> predicate) where T : Res
     {
-        if (resDic.TryGetValue(typeof(T), out List<Res> value))
+        if (resDic.TryGetValue(typeof(T), out ResData value))
             return value.OfType<T>().Where(predicate);
         else
             return null;
@@ -53,7 +75,7 @@ public class Res : MonoBehaviour
     {
         Type type = obj.GetType();
         if (!resDic.ContainsKey(type))
-            resDic.Add(type, new List<Res>());
+            resDic.Add(type, new ResData());
         resDic[type].Add(obj);
     }
     public static void Remove(Res obj)
@@ -66,6 +88,13 @@ public class Res : MonoBehaviour
     #endregion
     [HideInInspector]
     public bool hasInteracted = false;
+    public string ZHTW => resDic[GetType()].prop.zhTW;
+    public float Interact => resDic[GetType()].prop.interact;
+    public string PickupAnim => resDic[GetType()].prop.pickupAnim;
+    public string PlaceAnim => resDic[GetType()].prop.placeAnim;
+    public string CarryAnim => resDic[GetType()].prop.carryAnim;
+    public BuildCost BuildCost => resDic[GetType()].prop.buildCost;
+    public Type StorageBy => resDic[GetType()].prop.storageBy;
     void OnEnable()
     {
         Add(this);

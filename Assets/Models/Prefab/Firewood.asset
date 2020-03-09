@@ -13,15 +13,13 @@ MonoBehaviour:
   m_Name: Firewood
   m_EditorClassIdentifier: 
   zhTW: "\u6728\u67F4"
+  interact: 2
   portable: 1
   pickupAnim: left-grab
   carryAnim: walk
   placeAnim: left-grab
-  interact: 2
+  storable: 1
+  storageByMate: FirewoodPile
   buildable: 0
-  buildCost:
-    log: 0
-    woodenPlank: 0
-    firewood: 0
-    branches: 0
-    rock: 0
+  buildCostMeta: []
+  isBuildRes: 1

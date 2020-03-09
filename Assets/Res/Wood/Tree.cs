@@ -7,7 +7,6 @@ public class Tree : MapResource
     public Branches branches;
     public Leaves leaves;
     public Log log;
-    public Wood wood;
     [Range(1, 6)]
     public int branchesAmount;
     protected override void Gathered()
@@ -38,11 +37,11 @@ public class Tree : MapResource
                 }
             };
         };
-        FreezeOnTriggerEnter woodFreezeTrigger = wood.gameObject.AddComponent<FreezeOnTriggerEnter>();
-        woodFreezeTrigger.onEnter = () =>
+        FreezeOnTriggerEnter logFreezeTrigger = log.gameObject.AddComponent<FreezeOnTriggerEnter>();
+        logFreezeTrigger.onEnter = () =>
         {
-            wood.enabled = true;
-            wood.transform.SetParent(Game.Group("Woods"));
+            log.enabled = true;
+            log.transform.SetParent(Game.Group("Logs"));
             Destroy(gameObject);
         };
     }
