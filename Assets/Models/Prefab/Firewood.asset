@@ -21,5 +21,9 @@ MonoBehaviour:
   storable: 1
   storageByMate: FirewoodPile
   buildable: 0
-  buildCostMeta: []
+  buildCostMeta:
+  - key: Wood
+    value: 1
   isBuildRes: 1
+  isWorkShop: 0
+  materialMeta: []

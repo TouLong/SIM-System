@@ -3,7 +3,7 @@ using System;
 using UnityEngine;
 public class TaskManager
 {
-
+    static public bool stop;
     static public void Add<T>(UnitAI unit) where T : Task, new()
     {
         unit.tasks.Add(new T() { unit = unit });
@@ -17,6 +17,7 @@ public class TaskManager
     }
     static public void Update()
     {
+        if (stop) return;
         foreach (UnitAI unit in Game.units)
         {
             if (unit.isPending)
@@ -48,17 +49,17 @@ public class TaskManager
     static public void MakingWoodenPlank(UnitAI unit)
     {
         Add<Task.Make<Sawhorse>>(unit);
-        Add<Task.SupplyToWorkshop<Sawhorse, Wood, WoodPile>>(unit);
+        Add<Task.SupplyToWorkshop<Sawhorse>>(unit);
     }
     static public void MakingFirewood(UnitAI unit)
     {
         Add<Task.Make<ChoppingSpot>>(unit);
-        Add<Task.SupplyToWorkshop<ChoppingSpot, Wood, WoodPile>>(unit);
+        Add<Task.SupplyToWorkshop<ChoppingSpot>>(unit);
     }
     static public void StorageWood(UnitAI unit)
     {
-        Add<Task.Storage<Wood, WoodPile>>(unit);
-        Add<Task.Storage<Branches, BranchesHeap>>(unit);
+        Add<Task.Storage<Wood>>(unit);
+        Add<Task.Storage<Branches>>(unit);
     }
 }
 
@@ -72,7 +73,11 @@ public class Task
         return default;
     }
     public virtual void Execute() { }
-    public virtual void Cancel() { }
+    public virtual void Cancel()
+    {
+        End();
+        unit.StopAction();
+    }
     public void Start()
     {
         unit.isPending = false;
@@ -87,7 +92,7 @@ public class Task
 
     public class Gather<T> : Task where T : MapResource
     {
-        public MapResource res;
+        MapResource res;
 
         public override bool GetReady()
         {
@@ -116,21 +121,21 @@ public class Task
         }
         public override void Cancel()
         {
+            base.Cancel();
             res.hasInteracted = false;
-            End();
-            unit.StopAction();
         }
     }
 
-    public class Storage<R, S> : Task where R : Res where S : Storage
+    public class Storage<R> : Task where R : Res
     {
-        public Res res;
-        public Storage storage;
+        Res res;
+        Storage storage;
 
         public override bool GetReady()
         {
-            storage = Storage.GetNotFullNear<S>(unit.transform.position);
             res = Res.GetAccessNear<R>(unit.transform.position);
+            if (res != null)
+                storage = Storage.GetNotFullNear(res.StorageBy, unit.transform.position);
             if (res != null && storage != null)
             {
                 res.hasInteracted = true;
@@ -165,101 +170,40 @@ public class Task
         }
         public override void Cancel()
         {
-            res.hasInteracted = false;
-            End();
             unit.Drop();
-            unit.StopAction();
+            base.Cancel();
+            res.hasInteracted = false;
         }
     }
 
-    public class SupplyToWorkshop<W, R, S> : Task where W : Workshop where R : MapResource where S : Storage
+    public class SupplyToWorkshop<W> : Task where W : Workshop
     {
-        public Workshop workshop;
-        public MapResource resource;
-        public Storage storage;
-        bool byStorage;
+        Workshop workshop;
+        Res res;
+        Res getRes;
+        Type resType;
         public override bool GetReady()
         {
             workshop = Workshop.GetEmptyNear<W>(unit.transform.position);
-            storage = Storage.GetNotEmptyNear<S>(unit.transform.position);
-            byStorage = storage != null;
-            if (storage == null)
-                resource = Res.GetAccessNear<R>(unit.transform.position);
-
-            if (workshop != null)
-            {
-                if (storage != null)
-                {
-                    Start();
-                    return true;
-                }
-                else if (resource != null)
-                {
-                    resource.hasInteracted = true;
-                    Start();
-                    return true;
-                }
-            }
-            return false;
-        }
-
-        public override void Execute()
-        {
-            float dist;
-            Res resource;
-            Transform moveTo;
-            if (byStorage)
-            {
-                resource = storage.item;
-                moveTo = storage.transform;
-                dist = 2f;
-            }
-            else
-            {
-                resource = this.resource;
-                moveTo = resource.transform;
-                dist = resource.Interact;
-            }
-            unit.MoveTo(moveTo, dist, UnitAnim.Walk, () =>
-            {
-                unit.Action(resource.PickupAnim, 0.5f, () =>
-                {
-                    if (byStorage)
-                        resource = storage.Output();
-                    unit.Pickup(resource);
-                    resource.hasInteracted = true;
-                }, () =>
-                {
-                    unit.MoveTo(workshop.transform, workshop.Interact, resource.CarryAnim, () =>
-                    {
-                        unit.Action(resource.PlaceAnim, 0.5f, () =>
-                        {
-                            workshop.Input(resource);
-                        }, () =>
-                        {
-                            End();
-                        });
-                    });
-                });
-            });
-        }
-    }
-
-    public class SupplyToBuildSpot : Task
-    {
-        public BuildSpot buildSpot;
-        public Storage storage;
-        public override bool GetReady()
-        {
-            buildSpot = BuildSpot.GetNeedSupplyNear(unit.transform.position);
-            if (buildSpot == null)
+            if (workshop == null)
                 return false;
-            foreach (Type type in buildSpot.neededCost.Keys)
+            foreach (Type type in workshop.neededCost.Keys)
             {
-                storage = Storage.GetNotEmptyNear(Res.Prop(type).storageBy, unit.transform.position);
-                if (storage != null)
+                getRes = Storage.GetNotEmptyNear(Res.Prop(type).storageBy, unit.transform.position);
+                if (getRes != null)
                 {
-                    buildSpot.neededCost.Modify(type, -1);
+                    resType = type;
+                    workshop.neededCost.Modify(type, -1);
+                    Start();
+                    return true;
+                }
+                getRes = Res.GetAccessNear(type, unit.transform.position);
+                if (getRes != null)
+                {
+                    res = getRes;
+                    res.hasInteracted = true;
+                    resType = type;
+                    workshop.neededCost.Modify(type, -1);
                     Start();
                     return true;
                 }
@@ -269,21 +213,23 @@ public class Task
 
         public override void Execute()
         {
-            Res resource = null;
-            unit.MoveTo(storage.transform, storage.Interact, UnitAnim.Walk, () =>
+            unit.MoveTo(getRes.transform, getRes.Interact, UnitAnim.Walk, () =>
             {
-                unit.Action(storage.item.PickupAnim, 0.5f, () =>
+                unit.Action(res == null ? (getRes as Storage).item.PickupAnim : res.CarryAnim, 0.5f, () =>
                 {
-                    resource = storage.Output();
-                    unit.Pickup(resource);
-                    resource.hasInteracted = true;
+                    if (res == null)
+                    {
+                        res = (getRes as Storage).Output();
+                        res.hasInteracted = true;
+                    }
+                    unit.Pickup(res);
                 }, () =>
                 {
-                    unit.MoveTo(buildSpot.transform, buildSpot.Interact, resource.CarryAnim, () =>
+                    unit.MoveTo(workshop.transform, workshop.Interact, res.CarryAnim, () =>
                     {
-                        unit.Action(resource.PlaceAnim, 0.5f, () =>
+                        unit.Action(res.PlaceAnim, 0.5f, () =>
                         {
-                            buildSpot.Input(resource);
+                            workshop.Input(res);
                         }, () =>
                         {
                             End();
@@ -291,6 +237,12 @@ public class Task
                     });
                 });
             });
+        }
+        public override void Cancel()
+        {
+            base.Cancel();
+            workshop.neededCost.Modify(resType, 1);
+            res = null;
         }
     }
 
@@ -331,37 +283,4 @@ public class Task
         }
     }
 
-    public class BuildObject : Task
-    {
-        BuildSpot buildSpot;
-        public override bool GetReady()
-        {
-            buildSpot = Workshop.GetCanProcessingNear<BuildSpot>(unit.transform.position);
-            if (buildSpot != null)
-            {
-                buildSpot.hasInteracted = true;
-                Start();
-                return true;
-            }
-            else
-                return false;
-        }
-        public override void Execute()
-        {
-            unit.MoveAndActionPeriod(buildSpot.transform, buildSpot.Interact, UnitAnim.Walk, UnitAnim.AxeV, () =>
-            {
-                buildSpot.Process();
-                return !buildSpot.IsComplete;
-            }, () =>
-            {
-                End();
-            });
-        }
-        public override void Cancel()
-        {
-            buildSpot.hasInteracted = false;
-            End();
-            unit.StopAction();
-        }
-    }
 }

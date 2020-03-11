@@ -23,3 +23,5 @@ MonoBehaviour:
   buildable: 0
   buildCostMeta: []
   isBuildRes: 0
+  isWorkShop: 0
+  materialMeta: []

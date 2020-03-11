@@ -6,6 +6,7 @@ using System;
 
 public class UIHelper
 {
+    static public GUILayoutOption buttonOption;
     static public void Line()
     {
         EditorGUILayout.Space();
@@ -22,9 +23,21 @@ public class UIHelper
         EditorGUIUtility.fieldWidth = 0;
         GUILayout.EndHorizontal();
     }
-    static public void Button(string text, Action action)
+
+    static public void Button(string text, Action action, float width = 30)
     {
-        if (GUILayout.Button(text))
+
+        if (GUILayout.Button(text, GUILayout.MaxWidth(width)))
             action();
+    }
+    static public void Width(float label, float field)
+    {
+        EditorGUIUtility.labelWidth = label;
+        EditorGUIUtility.fieldWidth = field;
+    }
+    static public void Width()
+    {
+        EditorGUIUtility.labelWidth = 0;
+        EditorGUIUtility.fieldWidth = 0;
     }
 }

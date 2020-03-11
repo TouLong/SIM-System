@@ -32,12 +32,12 @@ public class CommandPanel : MonoBehaviour//, IPointerEnterHandler, IPointerExitH
         SetTaskCommand<Task.Gather<Log>>("砍木", GatherPanel);
         SetTaskCommand<Task.Make<Sawhorse>>("木板", ProcessingPanel);
         SetTaskCommand<Task.Make<ChoppingSpot>>("木柴", ProcessingPanel);
-        SetTaskCommand<Task.SupplyToWorkshop<ChoppingSpot, Wood, WoodPile>>("木板站", TransPanel);
-        SetTaskCommand<Task.SupplyToWorkshop<Sawhorse, Wood, WoodPile>>("木柴站", TransPanel);
-        SetTaskCommand<Task.Storage<Wood, WoodPile>>("原木", TransPanel);
-        SetTaskCommand<Task.Storage<Branches, BranchesHeap>>("樹枝", TransPanel);
-        SetTaskCommand<Task.Storage<WoodenPlank, WoodenPlankPile>>("木板", TransPanel);
-        SetTaskCommand<Task.Storage<Firewood, FirewoodPile>>("木柴", TransPanel);
+        SetTaskCommand<Task.SupplyToWorkshop<ChoppingSpot>>("木板站", TransPanel);
+        SetTaskCommand<Task.SupplyToWorkshop<Sawhorse>>("木柴站", TransPanel);
+        SetTaskCommand<Task.Storage<Wood>>("原木", TransPanel);
+        SetTaskCommand<Task.Storage<Branches>>("樹枝", TransPanel);
+        SetTaskCommand<Task.Storage<WoodenPlank>>("木板", TransPanel);
+        SetTaskCommand<Task.Storage<Firewood>>("木柴", TransPanel);
         foreach (Res res in resList)
         {
             SetCommand(res.ZHTW, ObjectPanel).AddListener(() => { ObjectPlacement.Request(res); });

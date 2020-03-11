@@ -49,6 +49,19 @@ public class Storage : Res
         }
         return null;
     }
+    public static Storage GetNotFullNear(Type type, Vector3 position)
+    {
+        IEnumerable<Storage> storages = Get<Storage>(type);
+        if (storages == null)
+            return null;
+        if (storages.Any())
+        {
+            storages = storages.Where(x => !x.IsFull);
+            if (storages.Any())
+                return storages.OrderBy(r => Vector3.Distance(r.transform.position, position)).First();
+        }
+        return null;
+    }
     public virtual void Input(Res res)
     {
         Destroy(res.gameObject);

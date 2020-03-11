@@ -16,6 +16,9 @@ public class ResProp : ScriptableObject
     public List<StringInt> buildCostMeta;
     public BuildCost buildCost;
     public bool isBuildRes;
+    public bool isWorkShop;
+    public List<StringInt> materialMeta;
+    public BuildCost material;
 }
 [Serializable]
 public class StringInt

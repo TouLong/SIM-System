@@ -2,11 +2,13 @@
 
 public class Sawhorse : Workshop
 {
-    public GameObject log;
+    public GameObject wood;
     public Transform[] planks;
     void Start()
     {
         complete = 10;
+        neededCost = Material.Clone;
+        currentCost = new BuildCost();
     }
     public override void Process()
     {
@@ -18,19 +20,26 @@ public class Sawhorse : Workshop
     }
     public override void Input(Res res)
     {
-        log.SetActive(true);
-        processing = 1;
-        Destroy(res.gameObject);
+        base.Input(res);
+        if (neededCost.IsEmpty)
+            processing = 1;
+        if (processing == 1)
+            wood.SetActive(true);
     }
 
     void ProcessComplete()
     {
-        log.SetActive(false);
+        wood.SetActive(false);
         processing = complete;
         foreach (Transform trans in planks)
         {
             Instantiate(product, trans.position, trans.rotation, Game.Group(product.name));
         }
-        Timer.Set(0.1f, () => processing = 0);
+        Timer.Set(0.1f, () =>
+        {
+            processing = 0;
+            neededCost = Material.Clone;
+            currentCost = new BuildCost();
+        });
     }
 }

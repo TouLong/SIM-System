@@ -15,9 +15,9 @@ MonoBehaviour:
   zhTW: "\u6728\u67F4\u7AD9"
   interact: 4
   portable: 0
-  pickupAnim: 
-  carryAnim: 
-  placeAnim: 
+  pickupAnim: empty
+  carryAnim: empty
+  placeAnim: empty
   storable: 0
   storageByMate: 
   buildable: 1
@@ -25,3 +25,7 @@ MonoBehaviour:
   - key: Wood
     value: 1
   isBuildRes: 0
+  isWorkShop: 1
+  materialMeta:
+  - key: Wood
+    value: 1

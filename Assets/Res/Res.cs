@@ -27,6 +27,8 @@ public class Res : MonoBehaviour
                 BuildCost.AllTypes.Add(type);
             if (resProp.buildable)
                 resProp.buildCost = new BuildCost(resProp.buildCostMeta);
+            if (resProp.isWorkShop)
+                resProp.material = new BuildCost(resProp.materialMeta);
             if (resProp.storable)
                 resProp.storageBy = Type.GetType(resProp.storageByMate);
         }
@@ -57,6 +59,13 @@ public class Res : MonoBehaviour
         else
             return null;
     }
+    public static IEnumerable<Res> GetWhere(Type type, Func<Res, bool> predicate)
+    {
+        if (resDic.TryGetValue(type, out ResData value))
+            return value.Where(predicate);
+        else
+            return null;
+    }
     public static T GetWhereNear<T>(Func<T, bool> predicate, Vector3 position) where T : Res
     {
         IEnumerable<T> enumerable = GetWhere(predicate);
@@ -67,9 +76,23 @@ public class Res : MonoBehaviour
         else
             return null;
     }
+    public static Res GetWhereNear(Type type, Func<Res, bool> predicate, Vector3 position)
+    {
+        IEnumerable<Res> enumerable = GetWhere(type, predicate);
+        if (enumerable == null)
+            return null;
+        else if (enumerable.Any())
+            return enumerable.OrderBy(r => Vector3.Distance(r.transform.position, position)).First();
+        else
+            return null;
+    }
     public static T GetAccessNear<T>(Vector3 position) where T : Res
     {
         return GetWhereNear<T>(a => !a.hasInteracted, position);
+    }
+    public static Res GetAccessNear(Type type, Vector3 position)
+    {
+        return GetWhereNear(type, a => !a.hasInteracted, position);
     }
     public static void Add(Res obj)
     {
@@ -94,6 +117,7 @@ public class Res : MonoBehaviour
     public string PlaceAnim => resDic[GetType()].prop.placeAnim;
     public string CarryAnim => resDic[GetType()].prop.carryAnim;
     public BuildCost BuildCost => resDic[GetType()].prop.buildCost;
+    public BuildCost Material => resDic[GetType()].prop.material;
     public Type StorageBy => resDic[GetType()].prop.storageBy;
     void OnEnable()
     {

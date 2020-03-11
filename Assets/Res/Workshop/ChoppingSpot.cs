@@ -7,6 +7,8 @@ public class ChoppingSpot : Workshop
     void Start()
     {
         complete = 8;
+        neededCost = Material.Clone;
+        currentCost = new BuildCost();
     }
     public override void Process()
     {
@@ -18,9 +20,11 @@ public class ChoppingSpot : Workshop
     }
     public override void Input(Res res)
     {
-        wood.SetActive(true);
-        processing = 1;
-        Destroy(res.gameObject);
+        base.Input(res);
+        if (neededCost.IsEmpty)
+            processing = 1;
+        if (processing == 1)
+            wood.SetActive(true);
     }
 
     void ProcessComplete()
@@ -31,6 +35,11 @@ public class ChoppingSpot : Workshop
         {
             Instantiate(product, trans.position, trans.rotation, Game.Group(product.name));
         }
-        Timer.Set(0.1f, () => processing = 0);
+        Timer.Set(0.1f, () =>
+        {
+            processing = 0;
+            neededCost = Material.Clone;
+            currentCost = new BuildCost();
+        });
     }
 }

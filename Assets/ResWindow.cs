@@ -15,7 +15,8 @@ public class ResWindow : EditorWindow
     class UIProp
     {
         public bool showGourp = true;
-        public int selectbuildCost;
+        public int selectBuildCost;
+        public int selectMaterial;
     }
 
     [MenuItem("Window/Res Window")]
@@ -60,6 +61,9 @@ public class ResWindow : EditorWindow
             if (prop.buildCostMeta == null)
                 prop.buildCostMeta = new List<StringInt>();
             List<StringInt> buildCostMate = prop.buildCostMeta;
+            if (prop.materialMeta == null)
+                prop.materialMeta = new List<StringInt>();
+            List<StringInt> materialMeta = prop.materialMeta;
             string name = res.GetType().ToString();
             UIProp uiProp = uiProps[res];
             uiProp.showGourp = EditorGUILayout.Foldout(uiProp.showGourp, name);
@@ -69,14 +73,11 @@ public class ResWindow : EditorWindow
                 {
                     prop.zhTW = EditorGUILayout.TextField("中文", prop.zhTW);
                     prop.interact = EditorGUILayout.FloatField("互動範圍", prop.interact);
-                }, 60);
-                UIHelper.Horizontal(() =>
-                {
-                    prop.portable = EditorGUILayout.Toggle("可攜帶", prop.portable);
-                    prop.buildable = EditorGUILayout.Toggle("可建造", prop.buildable);
-                    prop.storable = EditorGUILayout.Toggle("可儲藏", prop.storable);
                     prop.isBuildRes = EditorGUILayout.Toggle("建造材料", prop.isBuildRes);
-                }, 45);
+                }, 60);
+                UIHelper.Width(50, 10);
+                prop.portable = EditorGUILayout.Toggle("可攜帶", prop.portable);
+                UIHelper.Width(0, 0);
                 if (prop.portable)
                 {
                     UIHelper.Horizontal(() =>
@@ -84,35 +85,25 @@ public class ResWindow : EditorWindow
                         prop.carryAnim = animNames[EditorGUILayout.Popup("搬運動畫", Mathf.Max(0, animNames.IndexOf(prop.carryAnim)), animNames.ToArray())];
                         prop.placeAnim = animNames[EditorGUILayout.Popup("放置動畫", Mathf.Max(0, animNames.IndexOf(prop.placeAnim)), animNames.ToArray())];
                         prop.pickupAnim = animNames[EditorGUILayout.Popup("拿起動畫", Mathf.Max(0, animNames.IndexOf(prop.pickupAnim)), animNames.ToArray())];
-                    }, 50);
+                    }, 50, 10);
                 }
+                UIHelper.Width(50, 10);
+                prop.buildable = EditorGUILayout.Toggle("可建造", prop.buildable);
                 if (prop.buildable)
                 {
-                    List<string> buildResName = buildCostMate.Select(y => y.key).ToList();
-                    List<Type> buildRes = BuildCost.AllTypes.Where(x => !buildResName.Contains(x.Name)).ToList();
-                    UIHelper.Horizontal(() =>
-                    {
-                        uiProp.selectbuildCost = EditorGUILayout.Popup("材料", uiProp.selectbuildCost, buildRes.Select(x => x.Name).ToArray());
-                        UIHelper.Button("+", () =>
-                        {
-                            if (buildRes.Any())
-                                buildCostMate.Add(new StringInt(buildRes[uiProp.selectbuildCost], 1));
-                        });
-                        UIHelper.Button("-", () =>
-                        {
-                            if (buildCostMate.Any())
-                                buildCostMate.RemoveAt(buildCostMate.Count - 1);
-                        });
-                    }, 40);
-                    foreach (StringInt stringInt in buildCostMate)
-                    {
-                        stringInt.value = EditorGUILayout.IntField(stringInt.key, stringInt.value);
-                    }
+                    uiProp.selectBuildCost = BuildCostLayout(buildCostMate, uiProp.selectBuildCost);
                 }
+                prop.storable = EditorGUILayout.Toggle("可儲藏", prop.storable);
                 if (prop.storable)
                 {
                     prop.storageByMate = resTypes[EditorGUILayout.Popup("儲藏於", Mathf.Max(0, resTypes.IndexOf(prop.storageByMate)), resTypes.ToArray())];
                 }
+                prop.isWorkShop = EditorGUILayout.Toggle("加工站", prop.isWorkShop);
+                if (prop.isWorkShop)
+                {
+                    uiProp.selectMaterial = BuildCostLayout(materialMeta, uiProp.selectMaterial);
+                }
+                UIHelper.Width(0, 0);
             }
             //EditorUtility.SetDirty(res);
             EditorUtility.SetDirty(prop);
@@ -131,7 +122,7 @@ public class ResWindow : EditorWindow
         }
     }
 
-    static public ResProp GetResProp(Res res)
+    static ResProp GetResProp(Res res)
     {
         ResProp prop;
         string localPath = "Assets/Models/Prefab/" + res.GetType().ToString() + ".asset";
@@ -146,5 +137,35 @@ public class ResWindow : EditorWindow
             AssetDatabase.SaveAssets();
         }
         return prop;
+    }
+
+    static int BuildCostLayout(List<StringInt> meta, int currentSelect)
+    {
+        List<string> buildResName = meta.Select(y => y.key).ToList();
+        List<Type> buildRes = BuildCost.AllTypes.Where(x => !buildResName.Contains(x.Name)).ToList();
+        int select = 0;
+        UIHelper.Horizontal(() =>
+        {
+            select = EditorGUILayout.Popup("材料", currentSelect, buildRes.Select(x => x.Name).ToArray(), GUILayout.MaxWidth(200));
+            UIHelper.Button("+", () =>
+            {
+                if (buildRes.Any())
+                    meta.Add(new StringInt(buildRes[currentSelect], 1));
+            });
+            UIHelper.Button("-", () =>
+            {
+                if (meta.Any())
+                    meta.RemoveAt(meta.Count - 1);
+            });
+        }, 40, 20);
+        EditorGUIUtility.labelWidth = 40;
+        EditorGUIUtility.fieldWidth = 20;
+        foreach (StringInt stringInt in meta)
+        {
+            stringInt.value = EditorGUILayout.IntField(stringInt.key, stringInt.value);
+        }
+        EditorGUIUtility.labelWidth = 0;
+        EditorGUIUtility.fieldWidth = 0;
+        return select;
     }
 }

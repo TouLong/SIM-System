@@ -25,3 +25,7 @@ MonoBehaviour:
   - key: Wood
     value: 1
   isBuildRes: 0
+  isWorkShop: 1
+  materialMeta:
+  - key: Wood
+    value: 1

@@ -39,12 +39,12 @@ public class Game : MonoBehaviour
         TaskManager.MakingWoodenPlank(units[3]);
         TaskManager.StorageWood(units[4]);
         TaskManager.StorageWood(units[5]);
-        TaskManager.Add<Task.SupplyToBuildSpot>(units[6]);
-        TaskManager.Add<Task.Storage<WoodenPlank, WoodenPlankPile>>(units[7]);
-        TaskManager.Add<Task.Storage<WoodenPlank, WoodenPlankPile>>(units[8]);
-        TaskManager.Add<Task.Storage<Firewood, FirewoodPile>>(units[9]);
-        TaskManager.Add<Task.Storage<Firewood, FirewoodPile>>(units[10]);
-        TaskManager.Add<Task.BuildObject>(units[11]);
+        TaskManager.Add<Task.SupplyToWorkshop<BuildSpot>>(units[6]);
+        TaskManager.Add<Task.Storage<WoodenPlank>>(units[7]);
+        TaskManager.Add<Task.Storage<WoodenPlank>>(units[8]);
+        TaskManager.Add<Task.Storage<Firewood>>(units[9]);
+        TaskManager.Add<Task.Storage<Firewood>>(units[10]);
+        TaskManager.Add<Task.Make<BuildSpot>>(units[11]);
     }
 
     void Update()
@@ -52,7 +52,9 @@ public class Game : MonoBehaviour
         TaskManager.Update();
         if (Input.GetKeyDown(KeyCode.Q))
         {
-            TaskManager.AllStop();
+            TaskManager.stop = !TaskManager.stop;
+            if (TaskManager.stop)
+                TaskManager.AllStop();
         }
         if (Input.GetKeyDown(KeyCode.W))
         {

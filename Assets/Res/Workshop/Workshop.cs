@@ -4,6 +4,8 @@ using System.Linq;
 using UnityEngine;
 public class Workshop : Res
 {
+    public BuildCost neededCost;
+    public BuildCost currentCost;
     public Res product;
     protected float complete;
     protected float processing;
@@ -16,6 +18,8 @@ public class Workshop : Res
     }
     public virtual void Input(Res res)
     {
+        currentCost.Modify(res.GetType(), 1);
+        Destroy(res.gameObject);
     }
     public virtual Res Output()
     {

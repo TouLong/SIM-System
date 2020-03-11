@@ -2,9 +2,6 @@
 
 public class BuildSpot : Workshop
 {
-    [HideInInspector]
-    public BuildCost neededCost;
-    BuildCost currentCost;
     static public BuildSpot GetNeedSupplyNear(Vector3 position)
     {
         return GetWhereNear<BuildSpot>(x => !x.neededCost.IsEmpty, position);
@@ -26,10 +23,9 @@ public class BuildSpot : Workshop
     }
     public override void Input(Res res)
     {
-        currentCost.Modify(res.GetType(), 1);
+        base.Input(res);
         if (neededCost.IsEmpty && product.BuildCost.IsEqual(currentCost))
             processing = 1;
-        Destroy(res.gameObject);
     }
     void ProcessComplete()
     {
