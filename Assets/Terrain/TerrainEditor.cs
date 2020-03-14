@@ -149,7 +149,7 @@ public class TerrainEditor : EditorWindow
             GUILayout.BeginHorizontal();
             string group = setting.objectsDistribution[i].groupName;
             setting.objectsDistribution[i].groupName = EditorGUILayout.TextField("群組", group != null && group != "" ? group : "Group" + (i + 1).ToString());
-            if (GUILayout.Button(mapObjectExpand[i] ? "<" : "V", GUILayout.MaxWidth(20)))
+            if (GUILayout.Button(mapObjectExpand[i] ? "v" : "<", GUILayout.MaxWidth(20)))
                 mapObjectExpand[i] = !mapObjectExpand[i];
             GUILayout.EndHorizontal();
             if (!mapObjectExpand[i])
@@ -272,7 +272,7 @@ public class TerrainEditor : EditorWindow
     }
     void GenerateMapObject()
     {
-        terrain.ClearMapObject();
+        terrain.ClearMapObjects();
         terrain.GenerateMapObject();
     }
     void ClearAll()
@@ -286,7 +286,7 @@ public class TerrainEditor : EditorWindow
     }
     void ClearMapObject()
     {
-        terrain.ClearMapObject();
+        terrain.ClearMapObjects();
     }
     void ClearChunks()
     {

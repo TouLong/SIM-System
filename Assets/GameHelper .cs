@@ -29,7 +29,7 @@ public class GameHelper : EditorWindow
                 BuildCharacter(character, template);
         }
         GUILayout.Label("建造完成後還需綁定Animator及Animation");
-        Helper.GUILine();
+        HelperWindow.GUILine();
         snapObject = EditorGUILayout.Toggle("貼地快捷鍵: \"`\" ", snapObject);
         if (GUILayout.Button("落地"))
         {
@@ -62,7 +62,7 @@ public class GameHelper : EditorWindow
         foreach (Component component in template.GetComponents<Component>())
         {
             if (component.GetType() == typeof(Transform)) continue;
-            Helper.CopyComponent(component, gameObject);
+            HelperWindow.CopyComponent(component, gameObject);
         }
     }
 

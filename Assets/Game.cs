@@ -30,7 +30,6 @@ public class Game : MonoBehaviour
         };
         ObjectSelection.selectebleObjects = units.Select(x => x.gameObject).ToList();
     }
-
     void Start()
     {
         TaskManager.Logging(units[0]);
