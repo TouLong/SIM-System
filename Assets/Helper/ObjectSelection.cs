@@ -13,33 +13,35 @@ public class ObjectSelection : MonoBehaviour
     static public List<GameObject> selectebleObjects;
     void Start()
     {
-        frame.gameObject.SetActive(false);
+        if (frame != null)
+            frame.gameObject.SetActive(false);
     }
-
     void Update()
     {
         if (!enable) return;
-        if (Input.GetMouseButtonDown(0) && !MouseRay.IsOverUI)
+        if (Mouse.LeftDown)
         {
             startPoint = Input.mousePosition;
-            if (MouseRay.Hit(out RaycastHit hit))
+            if (Mouse.Hit(out RaycastHit hit))
             {
                 onDeselect?.Invoke();
                 onSelect?.Invoke(hit.transform.gameObject);
             }
         }
-        if (Input.GetMouseButtonUp(0))
+        if (frame == null) return;
+        if (Mouse.LeftUp)
         {
             frame.gameObject.SetActive(false);
         }
-        if (Input.GetMouseButton(0) && !MouseRay.IsOverUI)
+        if (Mouse.Left)
         {
-            frame.gameObject.SetActive(true);
             endPoint = Input.mousePosition;
             Vector2 size = new Vector2(Mathf.Abs(startPoint.x - endPoint.x), Mathf.Abs(startPoint.y - endPoint.y));
+            frame.gameObject.SetActive(true);
             frame.position = (startPoint + endPoint) / 2f;
             frame.sizeDelta = canvas.transform.InverseTransformVector(size.x, size.y, 0);
             Rect selectRect = new Rect(Mathf.Min(startPoint.x, endPoint.x), Mathf.Min(startPoint.y, endPoint.y), size.x, size.y);
+            if (selectebleObjects == null) return;
             foreach (GameObject selectebleObject in selectebleObjects)
             {
                 if (selectRect.Contains(Camera.main.WorldToScreenPoint(selectebleObject.transform.position)))

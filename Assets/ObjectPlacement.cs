@@ -22,9 +22,9 @@ public class ObjectPlacement : MonoBehaviour
     {
         if (IsPlacing)
         {
-            if (Input.GetMouseButtonUp(0))
+            if (Mouse.LeftDown)
                 CreateObject();
-            else if (Input.GetKeyUp(KeyCode.Escape) || Input.GetMouseButtonUp(1))
+            else if (Input.GetKeyUp(KeyCode.Escape) || Mouse.RightUp)
                 Cancel();
             else
                 Move();
@@ -39,12 +39,12 @@ public class ObjectPlacement : MonoBehaviour
     {
         if (build)
         {
-            res = Instantiate(buildSpot, MouseRay.Point(), Quaternion.identity);
+            res = Instantiate(buildSpot, Mouse.HitPoint(), Quaternion.identity);
             (res as BuildSpot).SetBuildObject(newRes);
         }
         else
         {
-            res = Instantiate(newRes, MouseRay.Point(), Quaternion.identity);
+            res = Instantiate(newRes, Mouse.HitPoint(), Quaternion.identity);
         }
         res.enabled = false;
         Rigidbody rig = res.GetComponent<Rigidbody>();
@@ -63,7 +63,7 @@ public class ObjectPlacement : MonoBehaviour
 
     void Move()
     {
-        res.transform.position = MouseRay.Point();
+        res.transform.position = Mouse.HitPoint();
         if (!build)
             res.transform.position += Vector3.up * 3;
     }
