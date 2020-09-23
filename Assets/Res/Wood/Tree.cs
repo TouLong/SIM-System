@@ -17,7 +17,6 @@ public class Tree : MapResource
         rigidbody.useGravity = true;
         rigidbody.mass = 1;
         rigidbody.AddForce(V3Random.DirectionXZ() * 50);
-        //rigidbody.AddForce(Vector3.right * 50);
         FreezeOnTriggerEnter leavesFreezeTrigger = leaves.gameObject.AddComponent<FreezeOnTriggerEnter>();
         leavesFreezeTrigger.delayTime = 0.2f;
         leavesFreezeTrigger.onEnter = () =>
@@ -28,8 +27,11 @@ public class Tree : MapResource
             leaves.transform.SetParent(Game.Group("Leaves"));
             leaves.onGathered = () =>
             {
-                rigidbody.WakeUp();
-                rigidbody.constraints = RigidbodyConstraints.None;
+                if (rigidbody != null)
+                {
+                    rigidbody.WakeUp();
+                    rigidbody.constraints = RigidbodyConstraints.None;
+                }
                 while (branchesAmount > 0)
                 {
                     Instantiate(branches, leaves.transform.position + V3Random.Range(-1, 1), Q4Random.Value(), Game.Group("Branches"));

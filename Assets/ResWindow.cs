@@ -4,6 +4,7 @@ using System.Linq;
 using System.Collections.Generic;
 using System;
 using System.IO;
+#if UNITY_EDITOR
 public class ResWindow : EditorWindow
 {
     Vector2 scrollPos;
@@ -169,3 +170,4 @@ public class ResWindow : EditorWindow
         return select;
     }
 }
+#endif
