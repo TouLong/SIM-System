@@ -23,7 +23,6 @@ public class Tree : MapResource
         {
             rigidbody.Sleep();
             rigidbody.constraints = RigidbodyConstraints.FreezeAll;
-            leaves.enabled = true;
             leaves.transform.SetParent(Game.Group("Leaves"));
             leaves.onGathered = () =>
             {
@@ -38,12 +37,13 @@ public class Tree : MapResource
                     branchesAmount--;
                 }
             };
+            leaves.enabled = true;
         };
         FreezeOnTriggerEnter logFreezeTrigger = log.gameObject.AddComponent<FreezeOnTriggerEnter>();
         logFreezeTrigger.onEnter = () =>
         {
-            log.enabled = true;
             log.transform.SetParent(Game.Group("Logs"));
+            log.enabled = true;
             Destroy(gameObject);
         };
     }

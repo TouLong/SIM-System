@@ -13,6 +13,5 @@ public class Log : MapResource
             Instantiate(wood, woodSpawns[i].position, woodSpawns[i].rotation, Game.Group("Woods"));
         }
         Destroy(gameObject);
-
     }
 }

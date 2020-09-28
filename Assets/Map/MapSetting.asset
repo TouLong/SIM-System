@@ -84,7 +84,7 @@ MonoBehaviour:
     m_RotationOrder: 4
   layerMask:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 8
   waterLayer: -1
   mountainLayer: 3
   layers:

@@ -9,19 +9,20 @@ public class FreezeOnTriggerEnter : MonoBehaviour
     public bool destroyGameObject;
     void OnTriggerEnter(Collider other)
     {
-        if (other.name == "Terrain Chunk")
+        if (freeze == null)
         {
-            if (freeze != null)
-                Timer.Cancel(freeze);
-            freeze = Timer.Set(delayTime, () =>
+            if (other.gameObject.layer == LayerMask.NameToLayer("Ground"))
             {
-                transform.parent.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeAll;
-                onEnter?.Invoke();
-                if (destroyGameObject)
-                    Destroy(gameObject);
-                else
-                    Destroy(this);
-            });
+                freeze = Timer.Set(delayTime, () =>
+                {
+                    transform.parent.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeAll;
+                    onEnter?.Invoke();
+                    if (destroyGameObject)
+                        Destroy(gameObject);
+                    else
+                        Destroy(this);
+                });
+            }
         }
     }
 }
